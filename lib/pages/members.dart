@@ -14,7 +14,9 @@ class _MembersState extends State<Members> {
   bool _collapsedActive = true;
   bool _collapsedInactive = true;
   bool _isSearching = false;
+  bool _isCheckingActivity = false;
   String keyword;
+  String activityKeyword;
 
   @override
   Widget build(BuildContext context) {
@@ -140,6 +142,8 @@ class _MembersState extends State<Members> {
                                   _collapsedActive = !_collapsedActive;
                                   _collapsedSearch = true;
                                   _collapsedInactive = true;
+                                  _isCheckingActivity = !_isCheckingActivity;
+                                  activityKeyword = 'true';
                                 });
                               },
                               child: Padding(
@@ -199,6 +203,8 @@ class _MembersState extends State<Members> {
                                   _collapsedInactive = !_collapsedInactive;
                                   _collapsedSearch = true;
                                   _collapsedActive = true;
+                                  _isCheckingActivity = !_isCheckingActivity;
+                                  activityKeyword = 'false';
                                 });
                               },
                               child: Padding(
@@ -219,7 +225,7 @@ class _MembersState extends State<Members> {
                 ],
               ),
             ),
-            _isSearching ? FutureBuilder(
+            _isCheckingActivity ? ActivityBody(keyword: activityKeyword): _isSearching ? FutureBuilder(
               future: memberServices.searchMembers(keyword),
               builder: (context, snapshot){
                 if (snapshot.hasError) {
@@ -306,7 +312,6 @@ class _MembersState extends State<Members> {
                               color: Colors.grey.withOpacity(0.8),
                               fontSize: 25.0)));
                 }
-                print("List created");
                 return ListView.builder(
                     itemCount: snapshot.data.length,
                     physics: NeverScrollableScrollPhysics(),
@@ -329,6 +334,80 @@ class _MembersState extends State<Members> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class ActivityBody extends StatefulWidget {
+  final String keyword;
+
+  ActivityBody({this.keyword});
+  @override
+  _ActivityBodyState createState() => _ActivityBodyState(
+    keyword: keyword
+  );
+}
+
+class _ActivityBodyState extends State<ActivityBody> {
+  final String keyword;
+
+  _ActivityBodyState({this.keyword});
+
+  MemberServices memberServices = MemberServices();
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: memberServices.getMemberActivity(keyword),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+              child: Text(
+                'An error has occured',
+                style: TextStyle(color: Colors.red.withOpacity(0.7)),
+              ));
+        } else if (!snapshot.hasData) {
+          return Center(
+            child: Column(
+              children: <Widget>[
+                Container(
+                  height: 100.0,
+                  width: 100.0,
+                  child: CircularProgressIndicator(
+                    backgroundColor: Theme.of(context).accentColor,
+                  ),
+                ),
+                Text("Loading",
+                    style: TextStyle(
+                        color: Colors.grey.withOpacity(0.8),
+                        fontSize: 20.0))
+              ],
+            ),
+          );
+        } else if (snapshot.data.length == 0) {
+          return Center(
+              child: Text("No members available.",
+                  style: TextStyle(
+                      color: Colors.grey.withOpacity(0.8),
+                      fontSize: 25.0)));
+        }
+        return ListView.builder(
+            itemCount: snapshot.data.length,
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemBuilder: (context, index) => Dismissible(
+              key: Key("${snapshot.data[index].id}"),
+              child: MemberListItem(
+                id: snapshot.data[index].id,
+                firstName: snapshot.data[index].firstName,
+                surname: snapshot.data[index].surname,
+                date: snapshot.data[index].date,
+                active: snapshot.data[index].active,
+              ),
+              onDismissed: (direction) {
+                memberServices.deleteMember(snapshot.data[index]);
+              },
+            ));
+      },
     );
   }
 }

@@ -47,4 +47,12 @@ class MemberServices{
     return membersList;
   }
 
+  Future<List<Member>> getMemberActivity(String keyword) async{
+    final db = await dbHelper.database;
+    List<Map<String, dynamic>> allRows = await db.query('memberInfoTable', where: 'active LIKE ?', whereArgs: ['$keyword']);
+
+    List<Member> membersList =  allRows.map((member) => Member.fromMap(member)).toList();
+    return membersList;
+  }
+
 }
