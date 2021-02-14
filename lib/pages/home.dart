@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:spring_superior/pages/member_form.dart';
+import 'package:spring_superior/pages/members.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -18,6 +19,36 @@ class _HomePageState extends State<HomePage> {
             padding: EdgeInsets.all(8.0),
             child: ListView(
               children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.all(20.0),
+                  child: Container(
+                    height: 170.0,
+                    decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                              offset: Offset(4.0, 4.0),
+                              color: Theme.of(context).primaryColor.withOpacity(0.2),
+                              blurRadius: 2.0,
+                              spreadRadius: 5.0
+                          ),
+                          BoxShadow(
+                              offset: Offset(-4.0, -4.0),
+                              color: Colors.white.withOpacity(0.3),
+                              blurRadius: 2.0,
+                              spreadRadius: 5.0
+                          )
+                        ],
+                        borderRadius: BorderRadius.circular(40.0)
+                    ),
+                    child: InkWell(
+                      splashColor: Colors.pink.withOpacity(0.3),
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => Members()));
+                      },
+                      child: Container(child: Center(child: Text("All Users"))),
+                    ),
+                  ),
+                ),
                 GridView(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,

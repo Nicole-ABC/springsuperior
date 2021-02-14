@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
+import 'package:spring_superior/models/member_model.dart';
+import 'package:spring_superior/services/member_services.dart';
 
 
 class NewMember extends StatefulWidget {
@@ -12,6 +14,8 @@ class _NewMemberState extends State<NewMember> {
   TextEditingController surnameController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   DateTime _dateTime;
+
+  MemberServices memberServices = MemberServices();
 
   final f = DateFormat.yMMMMd();
 
@@ -101,7 +105,16 @@ class _NewMemberState extends State<NewMember> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    final member = Member(
+                      firstName: nameController.text,
+                      surname: surnameController.text,
+                      date: _dateTime.toString(),
+                      active: 'true'
+                    );
+                    memberServices.createMember(member);
+                    Navigator.pop(context);
+                  },
                   child: Container(
                     width: 300.0,
                     height: 50.0,
