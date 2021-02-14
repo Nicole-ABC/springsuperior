@@ -32,9 +32,6 @@ class _MemberListItemState extends State<MemberListItem> {
   String date;
   bool active;
 
-  DateTime dateP;
-
-  final f = DateFormat.yMMMMd();
 
   _MemberListItemState({
     this.id,
@@ -44,58 +41,56 @@ class _MemberListItemState extends State<MemberListItem> {
     this.active
   });
 
-
-  @override
-  void initState() {
-    setDate();
-    super.initState();
-  }
-
-  setDate(){
-    dateP = DateTime.parse(date);
+  String dateString (){
+    DateTime dateTime = DateTime.parse(date);
+    final f = DateFormat.yMMMMd();
+    return f.format(dateTime);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Dismissible(
-      key: Key('$id'),
+    return InkWell(
+      onTap: () {},
       child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: active ? Theme.of(context).accentColor : Colors.grey.withOpacity(0.5)),
+            borderRadius: BorderRadius.circular(15.0)
+        ),
         margin: EdgeInsets.all(8.0),
         height: 100.0,
-        child: Card(
-          child: Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  height: 20.0,
-                  width: 20.0,
-                  decoration: BoxDecoration(
-                    color: active ? Colors.green: Colors.grey,
-                    borderRadius: BorderRadius.circular(10.0)
-                  )
+        child: Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                height: 30.0,
+                width: 30.0,
+                decoration: BoxDecoration(
+                  color: active ? Theme.of(context).accentColor: Colors.grey.withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(15.0)
+                )
 
-                ),
-                Expanded(
+              ),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(left: 10.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text("$surname $firstName"),
-                      active ? Text("Active") : Text("Inactive"),
-                      Text(
-                        f.format(dateP),
-                      )
+                      Text(dateString())
                     ],
                   ),
                 ),
-                Container(
-                  child: Icon(
-                    Icons.more_vert
-                  ),
-                )
-              ],
-            ),
+              ),
+              Container(
+                child: Icon(
+                  Icons.more_vert
+                ),
+              )
+            ],
           ),
         ),
       ),

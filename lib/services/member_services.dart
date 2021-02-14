@@ -33,9 +33,18 @@ class MemberServices{
 
   Future<List<Member>> getAllMembers() async{
     final db = await dbHelper.database;
-    var allRows = await db.query('memberInfoTable');
+    List<Map<String, dynamic>> allRows = await db.query('memberInfoTable');
     
     List<Member> membersList =  allRows.map((member) => Member.fromMap(member)).toList();
     return membersList;
   }
+
+  Future<List<Member>> searchMembers(String keyword) async{
+    final db = await dbHelper.database;
+    List<Map<String, dynamic>> allRows = await db.query('memberInfoTable', where: 'name LIKE ?', whereArgs: ['%$keyword%']);
+
+    List<Member> membersList =  allRows.map((member) => Member.fromMap(member)).toList();
+    return membersList;
+  }
+
 }

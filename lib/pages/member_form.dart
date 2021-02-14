@@ -19,6 +19,25 @@ class _NewMemberState extends State<NewMember> {
 
   final f = DateFormat.yMMMMd();
 
+  checkDate() async{
+    DateTime now = DateTime.now();
+    MemberServices memberServices = MemberServices();
+    List<Member> membersList = await memberServices.getAllMembers();
+    membersList.forEach((member){
+      DateTime expiryDate = DateTime.parse(member.date);
+
+      if (now.isAfter(expiryDate)) {
+        member = Member(
+            id: member.id,
+            surname: member.surname,
+            firstName: member.firstName,
+            date: member.date,
+            active: 'false'
+        );
+        memberServices.updateMember(member);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,6 +132,7 @@ class _NewMemberState extends State<NewMember> {
                       active: 'true'
                     );
                     memberServices.createMember(member);
+                    checkDate();
                     Navigator.pop(context);
                   },
                   child: Container(
