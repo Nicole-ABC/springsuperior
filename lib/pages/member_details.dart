@@ -67,11 +67,13 @@ class _MemberDetailsState extends State<MemberDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black54,
       body: Center(
         child: Container(
           width: MediaQuery.of(context).size.width *0.85,
           height: MediaQuery.of(context).size.height *0.75,
           decoration: BoxDecoration(
+            color: Colors.white,
             border: Border.all(color: active ? Theme.of(context).accentColor : Colors.grey.withOpacity(0.5)),
             borderRadius: BorderRadius.circular(20.0),
           ),
@@ -124,7 +126,7 @@ class _MemberDetailsState extends State<MemberDetails> {
                           height: 60.0,
                           padding: EdgeInsets.only(right: 4.0, left: 10.0),
                           decoration: BoxDecoration(
-                            border: Border.all(color: Theme.of(context).accentColor),
+                            border: Border.all(color: Theme.of(context).primaryColor),
                             borderRadius: BorderRadius.circular(10.0)
                           ),
                           child: Center(
@@ -165,17 +167,17 @@ class _MemberDetailsState extends State<MemberDetails> {
                 ) :
                 InkWell(
                   onTap: ()async{
-                    print(_expiryDate);
                     showDatePicker(
                         context: context,
                         initialDate: _expiryDate == null ? DateTime.parse(date) : _expiryDate,
                         firstDate: DateTime(2001),
                         lastDate: DateTime(2100),
-                    ).then((expDate){
-                      setState(() {
-                        _expiryDate = expDate;
-                        date = _expiryDate.toString();
-                      });
+                    ).then((expDate) async{
+                        setState(() {
+                          _expiryDate = expDate;
+                          date = _expiryDate.toString();
+
+                        });
                     });
                     final member = Member(
                         id: id,
@@ -184,8 +186,10 @@ class _MemberDetailsState extends State<MemberDetails> {
                         date: date,
                         active: 'true'
                     );
-                    memberServices.updateMember(member);
-                    setState(() {});
+                    await memberServices.updateMember(member);
+                    await memberServices.getAllMembers();
+                    print(member.date);
+                    print(_expiryDate);
                   },
                   child: Container(
                     width: 350.0,

@@ -20,12 +20,6 @@ class _MembersState extends State<Members> {
   String activityKeyword;
 
   @override
-  void setState(fn) {
-    memberServices.checkDate();
-    super.setState(fn);
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -281,7 +275,6 @@ class _MembersState extends State<Members> {
                               color: Colors.grey.withOpacity(0.8),
                               fontSize: 25.0)));
                 }
-                memberServices.checkDate();
                 return ListView.builder(
                     itemCount: snapshot.data.length,
                     physics: NeverScrollableScrollPhysics(),
@@ -337,7 +330,6 @@ class _MembersState extends State<Members> {
                               color: Colors.grey.withOpacity(0.8),
                               fontSize: 25.0)));
                 }
-                memberServices.checkDate();
                 return ListView.builder(
                     itemCount: snapshot.data.length,
                     physics: NeverScrollableScrollPhysics(),

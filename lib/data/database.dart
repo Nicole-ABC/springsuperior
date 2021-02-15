@@ -34,7 +34,7 @@ class DatabaseHelper {
   _initDatabase() async{
     Directory documents = await getApplicationDocumentsDirectory();
     String path = join(documents.path+_dbName);
-    return await openDatabase(path, version: _dbVersion, onCreate: await _onCreate);
+    return await openDatabase(path, version: _dbVersion, onCreate: _onCreate);
   }
 
   Future _onCreate(Database db, int version) async{
@@ -46,7 +46,7 @@ class DatabaseHelper {
       $memberColumnFirstName TEXT NOT NULL,
       $memberColumnDate TEXT NOT NULL, 
       $memberColumnActive TEXT NOT NULL,
-      $foreignKey STRING NOT NULL,
+      $foreignKey STRING,
       FOREIGN KEY ($foreignKey) REFERENCES memberAttendance ($attendanceColumnId)
       )
       '''
