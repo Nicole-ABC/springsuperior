@@ -4,31 +4,50 @@ import 'package:spring_superior/models/member_model.dart';
 class MemberServices{
   DatabaseHelper dbHelper = DatabaseHelper.instance;
 
-  createMember(Member member) async{
+  Future<int> createMember(Member member) async{
     final db = await dbHelper.database;
-    db.insert(
+    return await db.insert(
       'memberInfoTable',
       member.toMap()
     );
   }
 
-  updateMember(Member member) async{
+  Future<int> updateMember(Member member) async{
     final db = await dbHelper.database;
-    db.update(
-        'memberInfoTable',
-        member.toMap(),
+    return await db.update(
+      'memberInfoTable',
+      member.toMap(),
       where: '_id=?',
       whereArgs: [member.id]
     );
   }
 
-  deleteMember(Member member) async{
+  Future<int> deleteMember(Member member) async{
     final db = await dbHelper.database;
-    db.delete(
+    return await db.delete(
         'memberInfoTable',
         where: '_id=?',
         whereArgs: [member.id]
     );
+  }
+
+  checkDate() async{
+    DateTime now = DateTime.now();
+    List<Member> membersList = await getAllMembers();
+    membersList.forEach((member) async{
+      DateTime expiryDate = DateTime.parse(member.date);
+
+      if (now.isAfter(expiryDate)) {
+        member = Member(
+            id: member.id,
+            surname: member.surname,
+            firstName: member.firstName,
+            date: member.date,
+            active: 'false'
+        );
+        await updateMember(member);
+      }
+    });
   }
 
   Future<List<Member>> getAllMembers() async{

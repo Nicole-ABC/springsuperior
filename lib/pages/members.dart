@@ -14,9 +14,16 @@ class _MembersState extends State<Members> {
   bool _collapsedActive = true;
   bool _collapsedInactive = true;
   bool _isSearching = false;
-  bool _isCheckingActivity = false;
+  bool _isCheckingActive = false;
+  bool _isCheckingInactive = false;
   String keyword;
   String activityKeyword;
+
+  @override
+  void setState(fn) {
+    memberServices.checkDate();
+    super.setState(fn);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,6 +89,8 @@ class _MembersState extends State<Members> {
                                   _collapsedSearch = !_collapsedSearch;
                                   _collapsedActive = true;
                                   _collapsedInactive = true;
+                                  _isCheckingActive = false;
+                                  _isCheckingInactive = false;
                                 });
                                 if(_collapsedSearch == true){
                                   _isSearching = false;
@@ -142,8 +151,12 @@ class _MembersState extends State<Members> {
                                   _collapsedActive = !_collapsedActive;
                                   _collapsedSearch = true;
                                   _collapsedInactive = true;
-                                  _isCheckingActivity = !_isCheckingActivity;
-                                  activityKeyword = 'true';
+                                  _isCheckingActive = !_isCheckingActive;
+                                  _isCheckingInactive = false;
+                                  activityKeyword = _isCheckingActive.toString();
+                                  if(_collapsedActive){
+                                    _isCheckingActive = false;
+                                  }
                                 });
                               },
                               child: Padding(
@@ -203,8 +216,13 @@ class _MembersState extends State<Members> {
                                   _collapsedInactive = !_collapsedInactive;
                                   _collapsedSearch = true;
                                   _collapsedActive = true;
-                                  _isCheckingActivity = !_isCheckingActivity;
-                                  activityKeyword = 'false';
+                                  _isSearching = false;
+                                  _isCheckingInactive = !_isCheckingInactive;
+                                  _isCheckingActive = false;
+                                  activityKeyword = _isCheckingActive.toString();
+                                  if(_collapsedInactive){
+                                    _isCheckingInactive = false;
+                                  }
                                 });
                               },
                               child: Padding(
@@ -225,7 +243,7 @@ class _MembersState extends State<Members> {
                 ],
               ),
             ),
-            _isCheckingActivity ? ActivityBody(keyword: activityKeyword): _isSearching ? FutureBuilder(
+            _isCheckingActive || _isCheckingInactive ? ActivityBody(keyword: activityKeyword) : _isSearching ? FutureBuilder(
               future: memberServices.searchMembers(keyword),
               builder: (context, snapshot){
                 if (snapshot.hasError) {
@@ -246,6 +264,9 @@ class _MembersState extends State<Members> {
                             backgroundColor: Theme.of(context).accentColor,
                           ),
                         ),
+                        SizedBox(
+                          height: 15.0,
+                        ),
                         Text("Loading",
                             style: TextStyle(
                                 color: Colors.grey.withOpacity(0.8),
@@ -260,6 +281,7 @@ class _MembersState extends State<Members> {
                               color: Colors.grey.withOpacity(0.8),
                               fontSize: 25.0)));
                 }
+                memberServices.checkDate();
                 return ListView.builder(
                     itemCount: snapshot.data.length,
                     physics: NeverScrollableScrollPhysics(),
@@ -298,6 +320,9 @@ class _MembersState extends State<Members> {
                             backgroundColor: Theme.of(context).accentColor,
                           ),
                         ),
+                        SizedBox(
+                          height: 15.0,
+                        ),
                         Text("Loading",
                             style: TextStyle(
                                 color: Colors.grey.withOpacity(0.8),
@@ -312,6 +337,7 @@ class _MembersState extends State<Members> {
                               color: Colors.grey.withOpacity(0.8),
                               fontSize: 25.0)));
                 }
+                memberServices.checkDate();
                 return ListView.builder(
                     itemCount: snapshot.data.length,
                     physics: NeverScrollableScrollPhysics(),
@@ -375,6 +401,9 @@ class _ActivityBodyState extends State<ActivityBody> {
                   child: CircularProgressIndicator(
                     backgroundColor: Theme.of(context).accentColor,
                   ),
+                ),
+                SizedBox(
+                  height: 15.0,
                 ),
                 Text("Loading",
                     style: TextStyle(

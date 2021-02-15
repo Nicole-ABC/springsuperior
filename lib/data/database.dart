@@ -11,11 +11,14 @@ class DatabaseHelper {
   final _dbName = "memberDetails.db";
   final _dbVersion = 1;
 
-  static final columnId = '_id';
-  static final columnSurname = 'surname';
-  static final columnFirstName = 'name';
-  static final columnDate = 'date';
-  static final columnActive = 'active';
+  static final memberColumnId = '_id';
+  static final memberColumnSurname = 'surname';
+  static final memberColumnFirstName = 'name';
+  static final memberColumnDate = 'date';
+  static final memberColumnActive = 'active';
+  static final attendanceColumnId = 'attendanceId';
+  static final attendanceColumnDate = 'attendanceDate';
+  static final foreignKey = 'FK_memberInfoTable_memberAttendance';
 
   static Database _database;
 
@@ -24,7 +27,7 @@ class DatabaseHelper {
       return _database;
     }
     else{
-      _database = await _initDatabase();
+      return _database = await _initDatabase();
     }
   }
 
@@ -38,11 +41,22 @@ class DatabaseHelper {
     await db.execute(
         '''
       CREATE TABLE memberInfoTable (
-      $columnId INTEGER PRIMARY KEY AUTOINCREMENT,
-      $columnSurname TEXT NOT NULL, 
-      $columnFirstName TEXT NOT NULL,
-      $columnDate TEXT NOT NULL, 
-      $columnActive TEXT NOT NULL)
+      $memberColumnId INTEGER PRIMARY KEY AUTOINCREMENT,
+      $memberColumnSurname TEXT NOT NULL, 
+      $memberColumnFirstName TEXT NOT NULL,
+      $memberColumnDate TEXT NOT NULL, 
+      $memberColumnActive TEXT NOT NULL,
+      $foreignKey STRING NOT NULL,
+      FOREIGN KEY ($foreignKey) REFERENCES memberAttendance ($attendanceColumnId)
+      )
+      '''
+    );
+
+    await db.execute(
+        '''
+      CREATE TABLE memberAttendance (
+      $attendanceColumnId INTEGER PRIMARY KEY AUTOINCREMENT,
+      $attendanceColumnDate TEXT NOT NULL)
       '''
     );
   }
