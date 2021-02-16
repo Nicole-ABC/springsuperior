@@ -5,12 +5,10 @@ import 'package:spring_superior/pages/member_details.dart';
 import 'package:spring_superior/services/member_services.dart';
 
 class MemberListItem extends StatefulWidget {
-  Member member;
-  Future myFuture;
+  final Member member;
 
   MemberListItem({
     this.member,
-    this.myFuture
   });
 
   @override
@@ -21,10 +19,18 @@ class _MemberListItemState extends State<MemberListItem> {
   MemberServices memberServices = MemberServices();
   bool active;
 
+
+  getMyFuture(){
+    Future _myFuture;
+    print('home called');
+    _myFuture = memberServices.getAllMembers();
+  }
+
   @override
   void initState() {
-    getActive();
     memberServices.checkDate();
+    getActive();
+    getMyFuture();
     super.initState();
   }
 
@@ -43,12 +49,16 @@ class _MemberListItemState extends State<MemberListItem> {
       child: InkWell(
         borderRadius: BorderRadius.circular(18.0),
         onTap: () {
+          print(widget.member.date);
           Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => MemberDetails(member: widget.member)
               )
           );
+          setState(() {
+            getMyFuture();
+          });
         },
         child: Container(
           decoration: BoxDecoration(

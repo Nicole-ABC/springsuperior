@@ -46,15 +46,6 @@ class MemberServices{
             active: 'false'
         );
         await updateMember(member);
-      } else {
-        member = Member(
-            id: member.id,
-            surname: member.surname,
-            firstName: member.firstName,
-            date: member.date,
-            active: 'true'
-        );
-        await updateMember(member);
       }
     });
   }

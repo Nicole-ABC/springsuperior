@@ -19,18 +19,6 @@ class _MembersState extends State<Members> {
   bool _isCheckingInactive = false;
   String keyword;
   String activityKeyword;
-  Future _myFuture;
-
-  getMyFuture(){
-    print('home called');
-    _myFuture = memberServices.getAllMembers();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getMyFuture();
-  }
 
 
   @override
@@ -190,7 +178,7 @@ class _MembersState extends State<Members> {
                       borderRadius: BorderRadius.circular(20.0),
                       color: _collapsedInactive
                           ? Colors.white.withOpacity(0.9)
-                          : Colors.white.withOpacity(0.5),
+                          : Colors.white.withOpacity(0.9),
                       boxShadow: kElevationToShadow[3],
                     ),
                     child: Row(
@@ -204,7 +192,7 @@ class _MembersState extends State<Members> {
                                   child: Text(
                                     "Inactive",
                                     style: TextStyle(
-                                        color: Colors.white, fontSize: 16.5),
+                                        color: Colors.grey.withOpacity(0.8), fontSize: 16.5),
                                   ))),
                         ),
                         AnimatedContainer(
@@ -237,9 +225,7 @@ class _MembersState extends State<Members> {
                                 padding: EdgeInsets.all(12.0),
                                 child: Icon(
                                   _collapsedInactive ? Icons.person : Icons.close,
-                                  color: _collapsedInactive
-                                      ? Colors.grey.withOpacity(0.6)
-                                      : Colors.white,
+                                  color: Colors.grey.withOpacity(0.8),
                                 ),
                               ),
                             ),
@@ -304,7 +290,7 @@ class _MembersState extends State<Members> {
                     ));
               }
             ) : FutureBuilder(
-              future: _myFuture,
+              future: memberServices.getAllMembers(),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return Center(
@@ -348,7 +334,6 @@ class _MembersState extends State<Members> {
                           key: UniqueKey(),
                           child: MemberListItem(
                             member: snapshot.data[index],
-                            myFuture: _myFuture,
                           ),
                           onDismissed: (direction) async{
                             await memberServices.deleteMember(snapshot.data[index]);

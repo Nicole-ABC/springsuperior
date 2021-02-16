@@ -127,10 +127,9 @@ class _NewMemberState extends State<NewMember> {
                           active: 'true'
                       );
                       memberServices.createMember(member);
-                      _dateTime = null;
                     }
                     _scaffoldKey.currentState.showSnackBar(SnackBar(
-                      duration: Duration(milliseconds: 600),
+                      duration: Duration(milliseconds: 1000),
                       content: Text('${surnameController.text} ${nameController.text} has been added to your list.'),
                     ));
                     nameController.text = '';

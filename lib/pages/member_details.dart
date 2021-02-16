@@ -178,10 +178,8 @@ class _MemberDetailsState extends State<MemberDetails> {
                             active: act.toString()
                         );
                         await memberServices.updateMember(member);
-                        await memberServices.getAllMembers();
                         widget.member = member;
                     });
-                    print(widget.member.date);
                   },
                   child: Container(
                     width: 350.0,
@@ -215,6 +213,7 @@ class _MemberDetailsState extends State<MemberDetails> {
                   splashColor: Colors.white,
                   onTap: (){
                     Navigator.pop(context);
+                    print(widget.member.date + ' date');
                   },
                   child: Container(
                     width: double.infinity,
