@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:spring_superior/pages/member_form.dart';
 import 'package:spring_superior/pages/members.dart';
+import 'package:spring_superior/services/member_services.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -9,6 +10,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  MemberServices memberServices = MemberServices();
+
+
+
 
   @override
   Widget build(BuildContext context) {

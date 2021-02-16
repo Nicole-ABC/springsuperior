@@ -4,9 +4,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 
 class DatabaseHelper {
-  DatabaseHelper._privateConstructo();
+  DatabaseHelper._privateConstructor();
 
-  static final DatabaseHelper instance = DatabaseHelper. _privateConstructo();
+  static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
 
   final _dbName = "memberDetails.db";
   final _dbVersion = 1;

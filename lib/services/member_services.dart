@@ -46,6 +46,15 @@ class MemberServices{
             active: 'false'
         );
         await updateMember(member);
+      } else {
+        member = Member(
+            id: member.id,
+            surname: member.surname,
+            firstName: member.firstName,
+            date: member.date,
+            active: 'true'
+        );
+        await updateMember(member);
       }
     });
   }
@@ -53,24 +62,28 @@ class MemberServices{
   Future<List<Member>> getAllMembers() async{
     final db = await dbHelper.database;
     List<Map<String, dynamic>> allRows = await db.query('memberInfoTable');
-    
+
     List<Member> membersList =  allRows.map((member) => Member.fromMap(member)).toList();
     return membersList;
   }
 
   Future<List<Member>> searchMembers(String keyword) async{
     final db = await dbHelper.database;
-    List<Map<String, dynamic>> allRows = await db.query('memberInfoTable', where: 'name LIKE ?', whereArgs: ['%$keyword%']);
+    List<Map<String, dynamic>> searchRows = await db.query(
+        'memberInfoTable',
+        where: 'name LIKE ?',
+        whereArgs: ['%$keyword%']);
 
-    List<Member> membersList =  allRows.map((member) => Member.fromMap(member)).toList();
+    List<Member> membersList =  searchRows.map((member) =>
+        Member.fromMap(member)).toList();
     return membersList;
   }
 
   Future<List<Member>> getMemberActivity(String keyword) async{
     final db = await dbHelper.database;
-    List<Map<String, dynamic>> allRows = await db.query('memberInfoTable', where: 'active LIKE ?', whereArgs: ['$keyword']);
+    List<Map<String, dynamic>> activityRows = await db.query('memberInfoTable', where: 'active LIKE ?', whereArgs: ['$keyword']);
 
-    List<Member> membersList =  allRows.map((member) => Member.fromMap(member)).toList();
+    List<Member> membersList =  activityRows.map((member) => Member.fromMap(member)).toList();
     return membersList;
   }
 

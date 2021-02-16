@@ -7,51 +7,39 @@ import 'package:spring_superior/models/member_model.dart';
 import 'package:spring_superior/services/member_services.dart';
 
 class MemberDetails extends StatefulWidget {
-  final int id;
-  final String firstName;
-  final String surname;
-  final String date;
-  final bool active;
+  Member member;
 
   MemberDetails({
-    this.id,
-    this.firstName,
-    this.surname,
-    this.date,
-    this.active
+    this.member
   });
 
 
   @override
-  _MemberDetailsState createState() => _MemberDetailsState(
-    id: id,
-    firstName: firstName,
-    surname: surname,
-    date: date,
-    active: active
-  );
+  _MemberDetailsState createState() => _MemberDetailsState();
 }
 
 class _MemberDetailsState extends State<MemberDetails> {
-   int id;
-   String firstName;
-   String surname;
-   String date;
-   bool active;
+  int id;
+  String firstName;
+  String surname;
+  String date;
+  bool active;
 
    MemberServices memberServices = MemberServices();
    DateTime _expiryDate;
 
-  _MemberDetailsState({
-    this.id,
-    this.firstName,
-    this.surname,
-    this.date,
-    this.active
-  });
 
    @override
    void initState() {
+     id = widget.member.id;
+     firstName = widget.member.firstName;
+     surname = widget.member.surname;
+     date = widget.member.date;
+     if(widget.member.active == 'true'){
+       active = true;
+     }else{
+       active = false;
+     }
      memberServices.checkDate();
      super.initState();
    }
@@ -74,7 +62,7 @@ class _MemberDetailsState extends State<MemberDetails> {
           height: MediaQuery.of(context).size.height *0.75,
           decoration: BoxDecoration(
             color: Colors.white,
-            border: Border.all(color: active ? Theme.of(context).accentColor : Colors.grey.withOpacity(0.5)),
+            border: Border.all(color: active? Theme.of(context).accentColor : Colors.grey.withOpacity(0.5)),
             borderRadius: BorderRadius.circular(20.0),
           ),
           child: Column(
@@ -167,29 +155,33 @@ class _MemberDetailsState extends State<MemberDetails> {
                 ) :
                 InkWell(
                   onTap: ()async{
-                    showDatePicker(
+                    await showDatePicker(
                         context: context,
                         initialDate: _expiryDate == null ? DateTime.parse(date) : _expiryDate,
                         firstDate: DateTime(2001),
                         lastDate: DateTime(2100),
                     ).then((expDate) async{
                         setState(() {
-                          _expiryDate = expDate;
-                          date = _expiryDate.toString();
-
+                          if(expDate != null){
+                            _expiryDate = expDate;
+                          }
                         });
+                        bool act = true;
+                        if(DateTime.now().isAfter(_expiryDate)){
+                          act = false;
+                        }
+                        final member = Member(
+                            id: id,
+                            firstName: firstName,
+                            surname: surname,
+                            date: _expiryDate.toString(),
+                            active: act.toString()
+                        );
+                        await memberServices.updateMember(member);
+                        await memberServices.getAllMembers();
+                        widget.member = member;
                     });
-                    final member = Member(
-                        id: id,
-                        firstName: firstName,
-                        surname: surname,
-                        date: date,
-                        active: 'true'
-                    );
-                    await memberServices.updateMember(member);
-                    await memberServices.getAllMembers();
-                    print(member.date);
-                    print(_expiryDate);
+                    print(widget.member.date);
                   },
                   child: Container(
                     width: 350.0,
@@ -221,7 +213,7 @@ class _MemberDetailsState extends State<MemberDetails> {
                       bottomRight: Radius.circular(20.0)
                   ),
                   splashColor: Colors.white,
-                  onTap: () {
+                  onTap: (){
                     Navigator.pop(context);
                   },
                   child: Container(

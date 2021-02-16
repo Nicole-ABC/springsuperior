@@ -1,53 +1,39 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:spring_superior/models/member_model.dart';
 import 'package:spring_superior/pages/member_details.dart';
 import 'package:spring_superior/services/member_services.dart';
 
 class MemberListItem extends StatefulWidget {
-  final int id;
-  final String firstName;
-  final String surname;
-  final String date;
-  final String active;
+  Member member;
+  Future myFuture;
 
   MemberListItem({
-    this.id,
-    this.firstName,
-    this.surname,
-    this.date,
-    this.active
+    this.member,
+    this.myFuture
   });
+
   @override
-  _MemberListItemState createState() => _MemberListItemState(
-    firstName: firstName,
-    surname: surname,
-    date: date,
-    active: active == "true" ? true : false
-  );
+  _MemberListItemState createState() => _MemberListItemState();
 }
 
 class _MemberListItemState extends State<MemberListItem> {
-  int id;
-  String firstName;
-  String surname;
-  String date;
-  bool active;
-
   MemberServices memberServices = MemberServices();
-
-
-  _MemberListItemState({
-    this.id,
-    this.firstName,
-    this.surname,
-    this.date,
-    this.active
-  });
+  bool active;
 
   @override
   void initState() {
+    getActive();
     memberServices.checkDate();
     super.initState();
+  }
+
+  getActive(){
+    if(widget.member.active == 'true'){
+      active = true;
+    } else{
+      active = false;
+    }
   }
 
   @override
@@ -56,13 +42,14 @@ class _MemberListItemState extends State<MemberListItem> {
       type: MaterialType.transparency,
       child: InkWell(
         borderRadius: BorderRadius.circular(18.0),
-        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MemberDetails(
-          firstName: firstName,
-          surname: surname,
-          active: active,
-          date: date,
-          id: id,
-        ))),
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => MemberDetails(member: widget.member)
+              )
+          );
+        },
         child: Container(
           decoration: BoxDecoration(
             border: Border.all(color: active ? Theme.of(context).accentColor : Colors.grey.withOpacity(0.5)),
@@ -91,7 +78,7 @@ class _MemberListItemState extends State<MemberListItem> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text("$surname $firstName", style: TextStyle(fontSize: 18.0),),
+                        Text("${widget.member.surname} ${widget.member.firstName}", style: TextStyle(fontSize: 18.0),),
                       ],
                     ),
                   ),

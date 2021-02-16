@@ -4,6 +4,7 @@ import 'package:spring_superior/services/member_services.dart';
 import 'package:spring_superior/widgets/member_list_item.dart';
 
 class Members extends StatefulWidget {
+
   @override
   _MembersState createState() => _MembersState();
 }
@@ -18,6 +19,19 @@ class _MembersState extends State<Members> {
   bool _isCheckingInactive = false;
   String keyword;
   String activityKeyword;
+  Future _myFuture;
+
+  getMyFuture(){
+    print('home called');
+    _myFuture = memberServices.getAllMembers();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getMyFuture();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -243,7 +257,7 @@ class _MembersState extends State<Members> {
                 if (snapshot.hasError) {
                   return Center(
                       child: Text(
-                        'An error has occured',
+                        'An error has occurred',
                         style: TextStyle(color: Colors.red.withOpacity(0.7)),
                       ));
                 }
@@ -280,26 +294,22 @@ class _MembersState extends State<Members> {
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemBuilder: (context, index) => Dismissible(
-                      key: Key("${snapshot.data[index].id}"),
+                      key: UniqueKey(),
                       child: MemberListItem(
-                        id: snapshot.data[index].id,
-                        firstName: snapshot.data[index].firstName,
-                        surname: snapshot.data[index].surname,
-                        date: snapshot.data[index].date,
-                        active: snapshot.data[index].active,
+                        member: snapshot.data[index]
                       ),
-                      onDismissed: (direction) {
-                        memberServices.deleteMember(snapshot.data[index]);
+                      onDismissed: (direction) async{
+                        await memberServices.deleteMember(snapshot.data[index]);
                       },
                     ));
               }
             ) : FutureBuilder(
-              future: memberServices.getAllMembers(),
+              future: _myFuture,
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return Center(
                       child: Text(
-                    'An error has occured',
+                    'An error has occurred',
                     style: TextStyle(color: Colors.red.withOpacity(0.7)),
                   ));
                 } else if (!snapshot.hasData) {
@@ -335,16 +345,13 @@ class _MembersState extends State<Members> {
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemBuilder: (context, index) => Dismissible(
-                          key: Key("${snapshot.data[index].id}"),
+                          key: UniqueKey(),
                           child: MemberListItem(
-                            id: snapshot.data[index].id,
-                            firstName: snapshot.data[index].firstName,
-                            surname: snapshot.data[index].surname,
-                            date: snapshot.data[index].date,
-                            active: snapshot.data[index].active,
+                            member: snapshot.data[index],
+                            myFuture: _myFuture,
                           ),
-                          onDismissed: (direction) {
-                            memberServices.deleteMember(snapshot.data[index]);
+                          onDismissed: (direction) async{
+                            await memberServices.deleteMember(snapshot.data[index]);
                           },
                         ));
               },
@@ -380,7 +387,7 @@ class _ActivityBodyState extends State<ActivityBody> {
         if (snapshot.hasError) {
           return Center(
               child: Text(
-                'An error has occured',
+                'An error has occurred',
                 style: TextStyle(color: Colors.red.withOpacity(0.7)),
               ));
         } else if (!snapshot.hasData) {
@@ -416,16 +423,12 @@ class _ActivityBodyState extends State<ActivityBody> {
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemBuilder: (context, index) => Dismissible(
-              key: Key("${snapshot.data[index].id}"),
+              key: UniqueKey(),
               child: MemberListItem(
-                id: snapshot.data[index].id,
-                firstName: snapshot.data[index].firstName,
-                surname: snapshot.data[index].surname,
-                date: snapshot.data[index].date,
-                active: snapshot.data[index].active,
+                member: snapshot.data[index],
               ),
-              onDismissed: (direction) {
-                memberServices.deleteMember(snapshot.data[index]);
+              onDismissed: (direction) async{
+                await memberServices.deleteMember(snapshot.data[index]);
               },
             ));
       },

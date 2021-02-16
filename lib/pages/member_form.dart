@@ -13,6 +13,8 @@ class NewMember extends StatefulWidget {
 class _NewMemberState extends State<NewMember> {
   TextEditingController surnameController = TextEditingController();
   TextEditingController nameController = TextEditingController();
+
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   DateTime _dateTime;
 
   MemberServices memberServices = MemberServices();
@@ -25,6 +27,7 @@ class _NewMemberState extends State<NewMember> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor.withOpacity(0.4),
         elevation: 0.0,
@@ -108,31 +111,74 @@ class _NewMemberState extends State<NewMember> {
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: GestureDetector(
                   onTap: () {
-                    final member = Member(
-                      firstName: nameController.text,
-                      surname: surnameController.text,
-                      date: _dateTime.toString(),
-                      active: 'true'
-                    );
-                    memberServices.createMember(member);
-                    memberServices.checkDate();
-
-                    Navigator.pop(context);
-
+                    if(DateTime.now().isAfter(_dateTime)){
+                      final member = Member(
+                          firstName: nameController.text,
+                          surname: surnameController.text,
+                          date: _dateTime.toString(),
+                          active: 'false'
+                      );
+                      memberServices.createMember(member);
+                    } else {
+                      final member = Member(
+                          firstName: nameController.text,
+                          surname: surnameController.text,
+                          date: _dateTime.toString(),
+                          active: 'true'
+                      );
+                      memberServices.createMember(member);
+                      _dateTime = null;
+                    }
+                    _scaffoldKey.currentState.showSnackBar(SnackBar(
+                      duration: Duration(milliseconds: 600),
+                      content: Text('${surnameController.text} ${nameController.text} has been added to your list.'),
+                    ));
+                    nameController.text = '';
+                    surnameController.text = '';
                   },
                   child: Container(
                     width: 300.0,
                     height: 50.0,
                     decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor,
+                      border: Border.all(
+                        color: Theme.of(context).primaryColor,
+                      ),
                       borderRadius: BorderRadius.circular(8.0)
                     ),
                     child: Center(
                       child: Text(
                         'Submit',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Theme.of(context).primaryColor,
                           fontSize: 20.0
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 15.0,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    width: 300.0,
+                    height: 50.0,
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                        borderRadius: BorderRadius.circular(8.0)
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Done',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20.0
                         ),
                       ),
                     ),
