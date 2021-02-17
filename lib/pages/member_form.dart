@@ -132,8 +132,11 @@ class _NewMemberState extends State<NewMember> {
                       duration: Duration(milliseconds: 1000),
                       content: Text('${surnameController.text} ${nameController.text} has been added to your list.'),
                     ));
-                    nameController.text = '';
-                    surnameController.text = '';
+                    setState(() {
+                      nameController.clear();
+                      surnameController.clear();
+                    });
+                    _dateTime = null;
                   },
                   child: Container(
                     width: 300.0,

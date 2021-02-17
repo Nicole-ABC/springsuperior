@@ -1,24 +1,26 @@
 class Attendance{
   int id;
   String date;
+  int memberId;
 
   Attendance({
     this.id,
     this.date,
+    this.memberId,
   });
 
   Map<String, dynamic> toMap(){
     Map<String, dynamic> map = new Map();
-    if(id != null) {
+    if(id != null)
       map['attendanceId'] = id;
       map['attendanceDate'] = date;
-    }
-
-    return map;
+      map['FK_memberInfoTable_memberAttendance'] = memberId;
+      return map;
   }
 
   Attendance.fromMap(dynamic map){
     id = map['attendanceId'];
     date = map['attendanceDate'];
+    memberId = map['FK_memberInfoTable_memberAttendance'];
   }
 }

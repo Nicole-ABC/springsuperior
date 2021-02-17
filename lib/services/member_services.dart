@@ -70,6 +70,16 @@ class MemberServices{
     return membersList;
   }
 
+  Future<List<Member>> getMembersById(List<int> idNums) async{
+    List<Member> membersList = List<Member>();
+    List<Member> memList = await getAllMembers();
+    for(int i = 0; i<idNums.length; i++){
+      membersList.add(memList.firstWhere((f) => f.id == idNums[i]));
+    }
+    return membersList;
+  }
+
+
   Future<List<Member>> getMemberActivity(String keyword) async{
     final db = await dbHelper.database;
     List<Map<String, dynamic>> activityRows = await db.query('memberInfoTable', where: 'active LIKE ?', whereArgs: ['$keyword']);

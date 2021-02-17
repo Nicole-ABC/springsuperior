@@ -38,26 +38,23 @@ class DatabaseHelper {
   }
 
   Future _onCreate(Database db, int version) async{
-    await db.execute(
-        '''
+    await db.execute('''
       CREATE TABLE memberInfoTable (
       $memberColumnId INTEGER PRIMARY KEY AUTOINCREMENT,
       $memberColumnSurname TEXT NOT NULL, 
       $memberColumnFirstName TEXT NOT NULL,
       $memberColumnDate TEXT NOT NULL, 
-      $memberColumnActive TEXT NOT NULL,
-      $foreignKey STRING,
-      FOREIGN KEY ($foreignKey) REFERENCES memberAttendance ($attendanceColumnId)
+      $memberColumnActive TEXT NOT NULL
       )
-      '''
-    );
+      ''');
 
-    await db.execute(
-        '''
+    await db.execute('''
       CREATE TABLE memberAttendance (
       $attendanceColumnId INTEGER PRIMARY KEY AUTOINCREMENT,
-      $attendanceColumnDate TEXT NOT NULL)
-      '''
-    );
+      $attendanceColumnDate STRING NOT NULL,
+      $foreignKey INTEGER NOT NULL,
+      FOREIGN KEY ($foreignKey) REFERENCES memberAttendance ($memberColumnId)
+      )
+      ''');
   }
 }

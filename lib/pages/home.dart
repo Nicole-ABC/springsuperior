@@ -4,6 +4,8 @@ import 'package:spring_superior/pages/member_form.dart';
 import 'package:spring_superior/pages/members.dart';
 import 'package:spring_superior/services/member_services.dart';
 
+import 'attendance.dart';
+
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -162,7 +164,8 @@ class _HomePageState extends State<HomePage> {
                         child: InkWell(
                           splashColor: Colors.pink.withOpacity(0.3),
                           onTap: (){
-                            print("tapped");
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => AttendancePage()));
+                            setState(() {});
                           },
                           child: Container(margin: EdgeInsets.all(12.0),
                             decoration: BoxDecoration(

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:spring_superior/services/attendance_services.dart';
 import 'package:spring_superior/services/member_services.dart';
 import 'package:spring_superior/widgets/member_list_item.dart';
 
@@ -11,6 +12,7 @@ class Members extends StatefulWidget {
 
 class _MembersState extends State<Members> {
   MemberServices memberServices = MemberServices();
+  AttendanceServices attendanceServices = AttendanceServices();
   bool _collapsedSearch = true;
   bool _collapsedActive = true;
   bool _collapsedInactive = true;
@@ -331,14 +333,15 @@ class _MembersState extends State<Members> {
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemBuilder: (context, index) => Dismissible(
-                          key: UniqueKey(),
-                          child: MemberListItem(
-                            member: snapshot.data[index],
-                          ),
-                          onDismissed: (direction) async{
-                            await memberServices.deleteMember(snapshot.data[index]);
-                          },
-                        ));
+                      key: UniqueKey(),
+                      child: MemberListItem(
+                        member: snapshot.data[index],
+                      ),
+                      onDismissed: (direction) async{
+                        await memberServices.deleteMember(snapshot.data[index]);
+                        await attendanceServices.deleteMember(snapshot.data[index]);
+                      },
+                    ));
               },
             ),
           ],

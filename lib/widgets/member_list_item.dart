@@ -21,9 +21,7 @@ class _MemberListItemState extends State<MemberListItem> {
 
 
   getMyFuture(){
-    Future _myFuture;
-    print('home called');
-    _myFuture = memberServices.getAllMembers();
+    memberServices.getAllMembers();
   }
 
   @override
@@ -49,7 +47,6 @@ class _MemberListItemState extends State<MemberListItem> {
       child: InkWell(
         borderRadius: BorderRadius.circular(18.0),
         onTap: () {
-          print(widget.member.date);
           Navigator.push(
               context,
               MaterialPageRoute(

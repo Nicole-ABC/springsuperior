@@ -21,7 +21,6 @@ class Member{
     map['name'] = firstName;
     map['active'] = active;
     map['date'] = date;
-
     return map;
   }
 
