@@ -13,11 +13,11 @@ class AttendanceServices{
     );
   }
 
-  Future<int> deleteMember(Member member) async{
+  Future<int> deleteAttendance(Member member) async{
     final db = await dbHelper.database;
     return await db.delete(
         'memberAttendance',
-        where: 'memberId = ?',
+        where: 'FK_memberInfoTable_memberAttendance = ?',
         whereArgs: [member.id]
     );
   }

@@ -1,8 +1,10 @@
 import 'package:spring_superior/data/database.dart';
 import 'package:spring_superior/models/member_model.dart';
+import 'package:spring_superior/services/attendance_services.dart';
 
 class MemberServices{
   DatabaseHelper dbHelper = DatabaseHelper.instance;
+  AttendanceServices attendanceServices = AttendanceServices();
 
   Future<int> createMember(Member member) async{
     final db = await dbHelper.database;
@@ -69,6 +71,7 @@ class MemberServices{
         Member.fromMap(member)).toList();
     return membersList;
   }
+
 
   Future<List<Member>> getMembersById(List<int> idNums) async{
     List<Member> membersList = List<Member>();

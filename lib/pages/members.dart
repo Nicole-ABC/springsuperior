@@ -339,7 +339,7 @@ class _MembersState extends State<Members> {
                       ),
                       onDismissed: (direction) async{
                         await memberServices.deleteMember(snapshot.data[index]);
-                        await attendanceServices.deleteMember(snapshot.data[index]);
+                        await attendanceServices.deleteAttendance(snapshot.data[index]);
                       },
                     ));
               },

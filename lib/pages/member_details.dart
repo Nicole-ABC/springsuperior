@@ -182,37 +182,48 @@ class _MemberDetailsState extends State<MemberDetails> {
                       width: 20.0,
                     ),
                     Container(
-                      child: InkWell(
-                        onTap: () async{
-                          DateTime now = DateTime.now();
-                          final f = DateFormat.yMMMMd();
-                          String today = f.format(now);
-                          Attendance attendance = Attendance(
-                              date: today,
-                              memberId: id,
-                          );
-                          _markedPresent ? scaffoldKey.currentState.showSnackBar(SnackBar(
-                            duration: Duration(milliseconds: 1000),
-                            content: Text('This user has already been marked present.')
-                          ))
-                              : await attendanceServices.createAttendance(attendance);
-                          setState(() {
-
-                          });
-                        },
-                        child: Container(
-                          width: 150.0,
-                          height: 60.0,
-                          padding: EdgeInsets.only(right: 10.0, left: 4.0),
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Theme.of(context).primaryColor),
-                              borderRadius: BorderRadius.circular(10.0)
-                          ),
-                          child: Center(
-                            child: Text(
-                              'Present',
-                              style: TextStyle(
-                                  fontSize: 20.0
+                      child: Material(
+                        type: MaterialType.transparency,
+                        child: InkWell(
+                          onTap: () async{
+                            DateTime now = DateTime.now();
+                            final f = DateFormat.yMMMMd();
+                            String today = f.format(now);
+                            Attendance attendance = Attendance(
+                                date: today,
+                                memberId: id,
+                            );
+                            if(_markedPresent){
+                              scaffoldKey.currentState.showSnackBar(SnackBar(
+                                  duration: Duration(milliseconds: 1000),
+                                  content: Text('This user has already been marked present.')
+                              ));
+                            }
+                            else{
+                              await attendanceServices.createAttendance(attendance);
+                              scaffoldKey.currentState.showSnackBar(SnackBar(
+                                  duration: Duration(milliseconds: 1000),
+                                  content: Text('${widget.member.surname} ${widget.member.firstName} has been marked present.')
+                              ));
+                            }
+                            setState(() {
+                              markedPresent();
+                            });
+                          },
+                          child: Container(
+                            width: 150.0,
+                            height: 60.0,
+                            padding: EdgeInsets.only(right: 10.0, left: 4.0),
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Theme.of(context).primaryColor),
+                                borderRadius: BorderRadius.circular(10.0)
+                            ),
+                            child: Center(
+                              child: Text(
+                                'Present',
+                                style: TextStyle(
+                                    fontSize: 20.0
+                                ),
                               ),
                             ),
                           ),
@@ -221,47 +232,50 @@ class _MemberDetailsState extends State<MemberDetails> {
                     ),
                   ],
                 ) :
-                InkWell(
-                  onTap: ()async{
-                    await showDatePicker(
-                        context: context,
-                        initialDate: _expiryDate == null ? DateTime.parse(date) : _expiryDate,
-                        firstDate: DateTime(2001),
-                        lastDate: DateTime(2100),
-                    ).then((expDate) async{
-                        setState(() {
-                          if(expDate != null){
-                            _expiryDate = expDate;
+                Material(
+                  type: MaterialType.transparency,
+                  child: InkWell(
+                    onTap: ()async{
+                      await showDatePicker(
+                          context: context,
+                          initialDate: _expiryDate == null ? DateTime.parse(date) : _expiryDate,
+                          firstDate: DateTime(2001),
+                          lastDate: DateTime(2100),
+                      ).then((expDate) async{
+                          setState(() {
+                            if(expDate != null){
+                              _expiryDate = expDate;
+                            }
+                          });
+                          bool act = true;
+                          if(DateTime.now().isAfter(_expiryDate)){
+                            act = false;
                           }
-                        });
-                        bool act = true;
-                        if(DateTime.now().isAfter(_expiryDate)){
-                          act = false;
-                        }
-                        final member = Member(
-                            id: id,
-                            firstName: firstName,
-                            surname: surname,
-                            date: _expiryDate.toString(),
-                            active: act.toString()
-                        );
-                        await memberServices.updateMember(member);
-                        widget.member = member;
-                    });
-                  },
-                  child: Container(
-                    width: 350.0,
-                    height: 60.0,
-                    margin: EdgeInsets.only(right: 16.0, left: 16.0),
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey.withOpacity(0.7)),
-                        borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: Center(
-                      child: Text(
-                        'Renew Subscription',
-                        style: TextStyle(
-                            fontSize: 20.0
+                          final member = Member(
+                              id: id,
+                              firstName: firstName,
+                              surname: surname,
+                              date: _expiryDate.toString(),
+                              active: act.toString()
+                          );
+                          await memberServices.updateMember(member);
+                          widget.member = member;
+                      });
+                    },
+                    child: Container(
+                      width: 350.0,
+                      height: 60.0,
+                      margin: EdgeInsets.only(right: 16.0, left: 16.0),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey.withOpacity(0.7)),
+                          borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Renew Subscription',
+                          style: TextStyle(
+                              fontSize: 20.0
+                          ),
                         ),
                       ),
                     ),
