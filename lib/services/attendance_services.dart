@@ -22,6 +22,21 @@ class AttendanceServices{
     );
   }
 
+  Future<List<String>> getAllDates() async{
+    final db = await dbHelper.database;
+    List<Map<String, dynamic>> allRows = await db.query('memberAttendance');
+
+    List<Attendance> attendanceList =  allRows.map((attendance) => Attendance.fromMap(attendance)).toList();
+    List<String> datesList = List<String>();
+
+    attendanceList.forEach((attendance){
+      if(!datesList.contains(attendance.date)){
+        datesList.add(attendance.date);
+      }
+    });
+    return datesList;
+  }
+
   Future<List<Attendance>> getAllAttendancesByDate(String date) async{
     final db = await dbHelper.database;
     List<Map<String, dynamic>> allRows = await db.query('memberAttendance', where: 'attendanceDate = ?', whereArgs: ['$date']);

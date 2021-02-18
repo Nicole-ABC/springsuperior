@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:spring_superior/pages/member_form.dart';
 import 'package:spring_superior/pages/members.dart';
+import 'package:spring_superior/pages/stats.dart';
 
 import 'attendance.dart';
 
@@ -43,34 +44,37 @@ class _HomePageState extends State<HomePage> {
                         ],
                         borderRadius: BorderRadius.circular(40.0)
                     ),
-                    child: InkWell(
-                      splashColor: Colors.pink.withOpacity(0.3),
-                      onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => Members()));
-                      },
-                      child: Container(
-                        margin: EdgeInsets.all(40.0),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Theme.of(context).primaryColor.withOpacity(0.3)),
-                          borderRadius: BorderRadius.circular(20.0)
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 8.0,vertical: 12.0),
-                              child: Icon(
-                                Icons.people,
-                                color: Theme.of(context).primaryColor,
-                                size: 30.0,
+                    child: Material(
+                      type: MaterialType.transparency,
+                      child: InkWell(
+                        splashColor: Colors.pink.withOpacity(0.3),
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Members()));
+                        },
+                        child: Container(
+                          margin: EdgeInsets.all(40.0),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Theme.of(context).primaryColor.withOpacity(0.3)),
+                            borderRadius: BorderRadius.circular(20.0)
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 8.0,vertical: 12.0),
+                                child: Icon(
+                                  Icons.people,
+                                  color: Theme.of(context).primaryColor,
+                                  size: 30.0,
+                                ),
                               ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 8.0,vertical: 12.0),
-                              child: Text('Gym Members', style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 20.0),),
-                            )
-                          ],
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 8.0,vertical: 12.0),
+                                child: Text('Gym Members', style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 20.0),),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -104,33 +108,37 @@ class _HomePageState extends State<HomePage> {
                             ],
                             borderRadius: BorderRadius.circular(40.0)
                         ),
-                        child: InkWell(
-                          splashColor: Colors.pink.withOpacity(0.3),
-                          onTap: (){
-                            print("tapped");
-                          },
-                          child: Container(margin: EdgeInsets.all(12.0),
-                            decoration: BoxDecoration(
-                                border: Border.all(color: Theme.of(context).primaryColor.withOpacity(0.3)),
-                                borderRadius: BorderRadius.circular(20.0)
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 4.0,vertical: 12.0),
-                                  child: Icon(
-                                    Icons.show_chart,
-                                    color: Theme.of(context).primaryColor,
-                                    size: 30.0,
+                        child: Material(
+                          type: MaterialType.transparency,
+                          child: InkWell(
+                            splashColor: Colors.pink.withOpacity(0.3),
+                            onTap: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => StatsPage()));
+                              setState(() {});
+                            },
+                            child: Container(margin: EdgeInsets.all(12.0),
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: Theme.of(context).primaryColor.withOpacity(0.3)),
+                                  borderRadius: BorderRadius.circular(20.0)
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 4.0,vertical: 12.0),
+                                    child: Icon(
+                                      Icons.show_chart,
+                                      color: Theme.of(context).primaryColor,
+                                      size: 30.0,
+                                    ),
                                   ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 4.0,vertical: 12.0),
-                                  child: Text('Stats', style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 20.0),),
-                                )
-                              ],
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 4.0,vertical: 12.0),
+                                    child: Text('Stats', style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 18.0),),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -156,34 +164,37 @@ class _HomePageState extends State<HomePage> {
                             ],
                             borderRadius: BorderRadius.circular(40.0)
                         ),
-                        child: InkWell(
-                          splashColor: Colors.pink.withOpacity(0.3),
-                          onTap: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => AttendancePage()));
-                            setState(() {});
-                          },
-                          child: Container(margin: EdgeInsets.all(12.0),
-                            decoration: BoxDecoration(
-                                border: Border.all(color: Theme.of(context).primaryColor.withOpacity(0.3)),
-                                borderRadius: BorderRadius.circular(20.0)
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.only(right: 4.0,top: 12.0, bottom: 12.0),
-                                  child: Icon(
-                                    Icons.done,
-                                    color: Theme.of(context).primaryColor,
-                                    size: 30.0,
+                        child: Material(
+                          type: MaterialType.transparency,
+                          child: InkWell(
+                            splashColor: Colors.pink.withOpacity(0.3),
+                            onTap: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => AttendancePage()));
+                              setState(() {});
+                            },
+                            child: Container(margin: EdgeInsets.all(12.0),
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: Theme.of(context).primaryColor.withOpacity(0.3)),
+                                  borderRadius: BorderRadius.circular(20.0)
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: EdgeInsets.only(right: 4.0,top: 12.0, bottom: 12.0),
+                                    child: Icon(
+                                      Icons.done,
+                                      color: Theme.of(context).primaryColor,
+                                      size: 30.0,
+                                    ),
                                   ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 4.0,vertical: 12.0),
-                                  child: Text('Attendance', style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 18.0),),
-                                )
-                              ],
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 4.0,top: 12.0, bottom: 12.0),
+                                    child: Text('Attendance', style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 18.0),),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -212,34 +223,37 @@ class _HomePageState extends State<HomePage> {
                         ],
                         borderRadius: BorderRadius.circular(40.0)
                     ),
-                    child: InkWell(
-                      splashColor: Colors.pink.withOpacity(0.3),
-                      onTap: (){
-                        print('tapped');
-                      },
-                      child: Container(
-                        margin: EdgeInsets.all(40.0),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Theme.of(context).primaryColor.withOpacity(0.3)),
-                            borderRadius: BorderRadius.circular(20.0)
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 8.0,vertical: 12.0),
-                              child: Icon(
-                                Icons.room_service,
-                                color: Theme.of(context).primaryColor,
-                                size: 30.0,
+                    child: Material(
+                      type: MaterialType.transparency,
+                      child: InkWell(
+                        splashColor: Colors.pink.withOpacity(0.3),
+                        onTap: (){
+                          print('tapped');
+                        },
+                        child: Container(
+                          margin: EdgeInsets.all(40.0),
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Theme.of(context).primaryColor.withOpacity(0.3)),
+                              borderRadius: BorderRadius.circular(20.0)
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 8.0,vertical: 12.0),
+                                child: Icon(
+                                  Icons.room_service,
+                                  color: Theme.of(context).primaryColor,
+                                  size: 30.0,
+                                ),
                               ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 8.0,vertical: 12.0),
-                              child: Text('Services', style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 20.0),),
-                            )
-                          ],
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 8.0,vertical: 12.0),
+                                child: Text('Services', style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 20.0),),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),

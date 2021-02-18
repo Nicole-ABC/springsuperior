@@ -203,7 +203,7 @@ class _MemberDetailsState extends State<MemberDetails> {
                               await attendanceServices.createAttendance(attendance);
                               scaffoldKey.currentState.showSnackBar(SnackBar(
                                   duration: Duration(milliseconds: 1000),
-                                  content: Text('${widget.member.surname} ${widget.member.firstName} has been marked present.')
+                                  content: Text('${widget.member.surname} ${widget.member} has been marked present.')
                               ));
                             }
                             setState(() {
