@@ -17,20 +17,26 @@ class _StatsPageState extends State<StatsPage> {
   AttendanceServices attendanceServices = AttendanceServices();
   MemberServices memberServices = MemberServices();
   List<Member> memberList = List<Member>();
-  List<double> presentList = [0.0];
+  List<double> presentList = List<double>();
   double present = 0.0;
   int memberCount = 0;
   List<String> attendance = List<String>();
   bool created = false;
   List<int> ids = List<int>();
 
-  getNumPresent() async {
+  Future<List<double>> getNumPresent() async {
     if(!created) {
       attendance = await attendanceServices.getAllDates();
       for (int i = 0; i < attendance.length; i++) {
         ids = await attendanceServices.getPresentMemberId(attendance[i]);
+        presentList = [0.0];
         presentList.add(ids.length.toDouble());
       }
+      presentList.forEach((element) {
+        print(element);
+      });
+    }else{
+      presentList = [];
     }
     created = true;
     return presentList;
@@ -96,72 +102,93 @@ class _StatsPageState extends State<StatsPage> {
                       style: TextStyle(fontSize: 18.0),
                     ),
                   ),
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                          bottom: 25.0, left: 12.0, right: 12.0),
-                      child: FutureBuilder(
-                          future: getNumPresent(),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasError) {
-                              print(snapshot.error);
-                              return Center(
-                                  child: Text(
-                                    'An error has occurred',
-                                    style: TextStyle(
-                                        color: Colors.red.withOpacity(0.7)),
-                                  ));
-                            } else if (!snapshot.hasData) {
-                              return Center(
-                                child: Column(
-                                  children: <Widget>[
-                                    Container(
-                                      height: 100.0,
-                                      width: 100.0,
-                                      child: CircularProgressIndicator(
-                                        backgroundColor:
-                                        Theme
-                                            .of(context)
-                                            .accentColor,
-                                      ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        bottom: 25.0, left: 12.0, right: 12.0),
+                    child: FutureBuilder(
+                        future: getNumPresent(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            print(snapshot.error);
+                            return Center(
+                                child: Text(
+                                  'An error has occurred',
+                                  style: TextStyle(
+                                      color: Colors.red.withOpacity(0.7)),
+                                ));
+                          } else if (!snapshot.hasData) {
+                            return Center(
+                              child: Column(
+                                children: <Widget>[
+                                  Container(
+                                    height: 100.0,
+                                    width: 100.0,
+                                    child: CircularProgressIndicator(
+                                      backgroundColor:
+                                      Theme
+                                          .of(context)
+                                          .accentColor,
                                     ),
-                                    SizedBox(
-                                      height: 15.0,
-                                    ),
-                                    Text("Loading",
-                                        style: TextStyle(
-                                            color: Colors.grey.withOpacity(0.8),
-                                            fontSize: 20.0))
-                                  ],
-                                ),
-                              );
-                            }else if (snapshot.data.length == 0) {
-                              return Center(
-                                  child: Text("No details available.",
+                                  ),
+                                  SizedBox(
+                                    height: 15.0,
+                                  ),
+                                  Text("Loading",
                                       style: TextStyle(
                                           color: Colors.grey.withOpacity(0.8),
-                                          fontSize: 25.0)));
-                            }
-                            return Container(
-                              child:
-                                Sparkline(
-                                lineGradient: new LinearGradient(
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  colors: [
-                                    Colors.purple[800],
-                                    Colors.purple[200]
-                                  ],
-                                ),
-                                data: snapshot.data,
-                                pointsMode: PointsMode.last,
-                                pointColor: Colors.purple[900],
-                                lineWidth: 5.0,
-                                pointSize: 12.0,
-                              )
+                                          fontSize: 20.0))
+                                ],
+                              ),
                             );
-                          }),
-                    ),
+                          }else if (snapshot.data.length == 0) {
+                            return Container(
+                              width: MediaQuery.of(context).size.width * 0.7,
+                                height: MediaQuery.of(context).size.height *0.20,
+                                child:
+                                Column(
+                                  children: [
+                                    Center(child: Text('This data does not reflect actual attendance information', style: TextStyle(color: Colors.grey),),),
+                                    Sparkline(
+                                      lineGradient: new LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: [
+                                          Colors.blueGrey[800],
+                                          Colors.grey[400]
+                                        ],
+                                      ),
+                                      data: [2.0, 4.0, 3.0, 5.0],
+                                      pointsMode: PointsMode.none,
+                                      pointColor: Colors.purple[900],
+                                      lineWidth: 5.0,
+                                      pointSize: 12.0,
+                                    ),
+                                  ],
+                                )
+                            );
+                          }
+                          else {
+                            return Container(
+                                width: MediaQuery.of(context).size.width * 0.7,
+                                height: MediaQuery.of(context).size.height *0.20,
+                                child:Sparkline(
+                              lineGradient: new LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Colors.purple[900],
+                                  Colors.purple[200]
+                                ],
+                              ),
+                              data: snapshot.data,
+                              pointsMode: PointsMode.last,
+                              pointColor: Colors.purple[900],
+                              lineWidth: 5.0,
+                              pointSize: 12.0,
+                            )
+                            );
+                          }
+                        }),
                   ),
                   Center(
                       child: Material(
@@ -173,7 +200,7 @@ class _StatsPageState extends State<StatsPage> {
                           splashColor: Colors.grey.withOpacity(0.7),
                           child: Container(
                             width: MediaQuery.of(context).size.width * 0.8,
-                            height: 50.0,
+                            height: 30.0,
                             child: Center(
                               child: Text(
                                 'Details',
@@ -298,15 +325,12 @@ class _StatsPageState extends State<StatsPage> {
                                           new CircularSegmentEntry(
                                             0.0,
                                             Colors.purple[900],
-                                            rankKey: 'completed',
                                           ),
                                           new CircularSegmentEntry(
                                            0.0,
                                             Colors.purple[200],
-                                            rankKey: 'remaining',
                                           ),
                                         ],
-                                        rankKey: 'progress',
                                       ),
                                     ],
                                     holeLabel: '0',

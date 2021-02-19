@@ -31,10 +31,10 @@ class _HomePageState extends State<HomePage> {
   //   fltrNotification.initialize(initializationSettings, onSelectNotification: notificationSelected);
   //   _showNotification();
   // }
-
+  //
   // Future _showNotification() async {
   //   MemberServices memberServices = MemberServices();
-  //   bool created
+  //   bool created = false;
   //   var androidSettings = AndroidNotificationDetails(
   //       'Expiry Id', 'Expiry', 'Expired',
   //       playSound: true, enableVibration: true,
@@ -44,30 +44,30 @@ class _HomePageState extends State<HomePage> {
   //   List<Member> memList = await memberServices.checkDate();
   //   if(memList.isNotEmpty){
   //     for(Member m in memList){
-  //       var scheduledTime = DateTime.parse(m.date);
+  //       var scheduledTime = DateTime.now();
   //       final timeZone = TimeZone();
   //       String timeZoneName = await timeZone.getTimeZoneName();
   //       final location = await timeZone.getLocation(timeZoneName);
-  //       final scheduledDate = tz.TZDateTime.from(scheduledTime, location).add(Duration(minutes: 35));
-  //       fltrNotification.show(
-  //           1,
-  //           'Subscription Notification',
-  //           'Faith\'s subscription has expired.',
-  //           notifDetails
-  //       );
-  //
-  //       // await fltrNotification.zonedSchedule(
-  //       //     member.id,
+  //       final scheduledDate = tz.TZDateTime.from(scheduledTime, location).add(Duration(seconds: 20));
+  //       // fltrNotification.show(
+  //       //     1,
   //       //     'Subscription Notification',
-  //       //     '${member.surname} ${member.firstName}\'s subscription has expired.',
-  //       //     scheduledDate,
-  //       //     notifDetails,
-  //       //     uiLocalNotificationDateInterpretation:
-  //       //     UILocalNotificationDateInterpretation.absoluteTime,
-  //       //     androidAllowWhileIdle: true);
-  //     }
-  //   }
+  //       //     'Faith\'s subscription has expired.',
+  //       //     notifDetails
+  //       // );
   //
+  //       await fltrNotification.zonedSchedule(
+  //           m.id,
+  //           'Subscription Notification',
+  //           '${m.surname} ${m.firstName}\'s subscription has expired.',
+  //           scheduledDate,
+  //           notifDetails,
+  //           uiLocalNotificationDateInterpretation:
+  //           UILocalNotificationDateInterpretation.absoluteTime,
+  //           androidAllowWhileIdle: true);
+  //     }
+  //       created = true;
+  //   }
   //
   // }
 
