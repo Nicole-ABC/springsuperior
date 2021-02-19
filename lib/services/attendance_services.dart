@@ -22,6 +22,15 @@ class AttendanceServices{
     );
   }
 
+  Future<int> deleteDateAttendance(Member member, String date) async{
+    final db = await dbHelper.database;
+    return await db.delete(
+        'memberAttendance',
+        where: 'FK_memberInfoTable_memberAttendance = ? AND attendanceDate = ?',
+        whereArgs: [member.id, '$date']
+    );
+  }
+
   Future<List<String>> getAllDates() async{
     final db = await dbHelper.database;
     List<Map<String, dynamic>> allRows = await db.query('memberAttendance');

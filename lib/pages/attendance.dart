@@ -25,6 +25,7 @@ class _AttendancePageState extends State<AttendancePage> {
       numId = await attendanceServices.getPresentMemberId(cDate);
       memberList = await memberServices.getMembersById(numId);
     }
+    setState(() {});
     return memberList;
   }
 
@@ -43,7 +44,7 @@ class _AttendancePageState extends State<AttendancePage> {
               children: <Widget>[
                 AnimatedContainer(
                   duration: Duration(milliseconds: 400),
-                  width: _collapsedDate ? 50.0 : 400.0,
+                  width: _collapsedDate ? 50.0 : MediaQuery.of(context).size.width * 0.9,
                   height: 50.0,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20.0),
@@ -168,6 +169,7 @@ class _AttendancePageState extends State<AttendancePage> {
                             itemBuilder: (context, index) {
                               return AttendanceListItem(
                                 member: snapshot.data[index],
+                                date: cDate,
                               );
                             });
                       },

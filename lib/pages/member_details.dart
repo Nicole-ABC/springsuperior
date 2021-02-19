@@ -79,15 +79,13 @@ class _MemberDetailsState extends State<MemberDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      backgroundColor: Colors.black54,
       body: Center(
         child: Container(
           width: MediaQuery.of(context).size.width *0.85,
           height: MediaQuery.of(context).size.height *0.75,
           decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(color: active? Theme.of(context).accentColor : Colors.grey.withOpacity(0.5)),
             borderRadius: BorderRadius.circular(20.0),
+            border: Border.all()
           ),
           child: Column(
             children: <Widget>[
@@ -203,7 +201,7 @@ class _MemberDetailsState extends State<MemberDetails> {
                               await attendanceServices.createAttendance(attendance);
                               scaffoldKey.currentState.showSnackBar(SnackBar(
                                   duration: Duration(milliseconds: 1000),
-                                  content: Text('${widget.member.surname} ${widget.member} has been marked present.')
+                                  content: Text('${widget.member.surname} ${widget.member.firstName} has been marked present.')
                               ));
                             }
                             setState(() {

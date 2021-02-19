@@ -36,9 +36,9 @@ class MemberServices{
   checkDate() async{
     DateTime now = DateTime.now();
     List<Member> membersList = await getAllMembers();
+    List<Member> expList = List<Member>();
     membersList.forEach((member) async{
       DateTime expiryDate = DateTime.parse(member.date);
-
       if (now.isAfter(expiryDate)) {
         member = Member(
             id: member.id,
@@ -48,8 +48,10 @@ class MemberServices{
             active: 'false'
         );
         await updateMember(member);
+        expList.add(member);
       }
     });
+    return expList;
   }
 
   Future<List<Member>> getAllMembers() async{

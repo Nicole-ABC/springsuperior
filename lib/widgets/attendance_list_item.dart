@@ -7,9 +7,9 @@ import 'package:spring_superior/services/member_services.dart';
 
 class AttendanceListItem extends StatefulWidget {
   Member member;
-  Future future;
+  String date;
 
-  AttendanceListItem({this.member, this.future});
+  AttendanceListItem({this.member, this.date});
   @override
   _AttendanceListItemState createState() => _AttendanceListItemState();
 }
@@ -54,7 +54,7 @@ class _AttendanceListItemState extends State<AttendanceListItem> {
                 ),
               ),
               onPressed: (){
-                attendanceServices.deleteAttendance(widget.member);
+                attendanceServices.deleteDateAttendance(widget.member, widget.date);
                 Navigator.pop(context);
               },
             ),
@@ -112,7 +112,7 @@ class _AttendanceListItemState extends State<AttendanceListItem> {
                 padding: EdgeInsets.all(10.0),
                 child: Icon(
                   Icons.offline_pin,
-                  color: Colors.green.withOpacity(0.7),
+                  color: Colors.purple[800],
                 ),
               ),
               Expanded(
@@ -141,7 +141,7 @@ class _AttendanceListItemState extends State<AttendanceListItem> {
                       height: 50.0,
                       child: Icon(
                         Icons.delete,
-                        color: Colors.red.withOpacity(0.7),
+                        color: Theme.of(context).primaryColor,
                       ),
                     ),
                   ),
