@@ -39,7 +39,7 @@ class _MembersState extends State<Members> {
                 children: <Widget>[
                   AnimatedContainer(
                     duration: Duration(milliseconds: 400),
-                    width: _collapsedSearch ? 50.0 : 250.0,
+                    width: _collapsedSearch ? 50.0 : MediaQuery.of(context).size.width *0.5,
                     height: 50.0,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20.0),

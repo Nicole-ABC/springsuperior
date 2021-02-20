@@ -59,9 +59,9 @@ class _MemberDetailsState extends State<MemberDetails> {
   }
 
   String presentDate (){
-     DateTime now = DateTime.now();
+     DateTime present = DateTime.now();
      final f = DateFormat.yMMMMd();
-     return f.format(now);
+     return f.format(present);
   }
 
   markedPresent() async{
@@ -93,10 +93,10 @@ class _MemberDetailsState extends State<MemberDetails> {
                 padding: EdgeInsets.only(top: 25.0),
                 child: Center(
                   child: Container(
-                    height: 300.0,
-                    width: 300.0,
+                    height: MediaQuery.of(context).size.height * 0.38,
+                    width: MediaQuery.of(context).size.width * 0.75,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(150.0),
+                      borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.4),
                       color: active ? Theme.of(context).accentColor : Colors.grey.withOpacity(0.7)
                     ),
                     child: Center(
@@ -158,9 +158,9 @@ class _MemberDetailsState extends State<MemberDetails> {
                       },
                       child: Center(
                         child: Container(
-                          width: 150.0,
-                          height: 60.0,
-                          padding: EdgeInsets.only(right: 4.0, left: 10.0),
+                          width: MediaQuery.of(context).size.width * 0.37,
+                          height: MediaQuery.of(context).size.height *0.07,
+                          padding: EdgeInsets.only(right: 6.0, left: 2.0),
                           decoration: BoxDecoration(
                             border: Border.all(color: Theme.of(context).primaryColor),
                             borderRadius: BorderRadius.circular(10.0)
@@ -209,9 +209,9 @@ class _MemberDetailsState extends State<MemberDetails> {
                             });
                           },
                           child: Container(
-                            width: 150.0,
-                            height: 60.0,
-                            padding: EdgeInsets.only(right: 10.0, left: 4.0),
+                            width: MediaQuery.of(context).size.width * 0.37,
+                            height: MediaQuery.of(context).size.height *0.07,
+                            padding: EdgeInsets.only(right: 2.0, left: 6.0),
                             decoration: BoxDecoration(
                                 border: Border.all(color: Theme.of(context).primaryColor),
                                 borderRadius: BorderRadius.circular(10.0)
@@ -261,8 +261,8 @@ class _MemberDetailsState extends State<MemberDetails> {
                       });
                     },
                     child: Container(
-                      width: 350.0,
-                      height: 60.0,
+                      width: MediaQuery.of(context).size.width * 0.75,
+                      height: MediaQuery.of(context).size.height *0.05,
                       margin: EdgeInsets.only(right: 16.0, left: 16.0),
                       decoration: BoxDecoration(
                           border: Border.all(color: Colors.grey.withOpacity(0.7)),

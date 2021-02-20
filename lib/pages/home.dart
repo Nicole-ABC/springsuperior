@@ -1,14 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:spring_superior/models/member_model.dart';
 import 'package:spring_superior/pages/member_form.dart';
 import 'package:spring_superior/pages/members.dart';
 import 'package:spring_superior/pages/stats.dart';
-import 'package:spring_superior/services/member_services.dart';
-import 'package:timezone/timezone.dart' as tz;
-import 'package:spring_superior/services/notification_services.dart';
-
 import 'attendance.dart';
 
 class HomePage extends StatefulWidget {
@@ -17,60 +11,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  MemberServices memServices = MemberServices();
-  // FlutterLocalNotificationsPlugin fltrNotification;
-  //
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   var androidInitialize = new AndroidInitializationSettings('exercise_icon');
-  //   var iOSInitialize = new IOSInitializationSettings();
-  //   var initializationSettings = new InitializationSettings(
-  //       android: androidInitialize, iOS: iOSInitialize);
-  //   fltrNotification = new FlutterLocalNotificationsPlugin();
-  //   fltrNotification.initialize(initializationSettings, onSelectNotification: notificationSelected);
-  //   _showNotification();
-  // }
-  //
-  // Future _showNotification() async {
-  //   MemberServices memberServices = MemberServices();
-  //   bool created = false;
-  //   var androidSettings = AndroidNotificationDetails(
-  //       'Expiry Id', 'Expiry', 'Expired',
-  //       playSound: true, enableVibration: true,
-  //       importance: Importance.max, priority: Priority.max);
-  //   var iosSettings = IOSNotificationDetails();
-  //   var notifDetails =  NotificationDetails(android: androidSettings, iOS: iosSettings);
-  //   List<Member> memList = await memberServices.checkDate();
-  //   if(memList.isNotEmpty){
-  //     for(Member m in memList){
-  //       var scheduledTime = DateTime.now();
-  //       final timeZone = TimeZone();
-  //       String timeZoneName = await timeZone.getTimeZoneName();
-  //       final location = await timeZone.getLocation(timeZoneName);
-  //       final scheduledDate = tz.TZDateTime.from(scheduledTime, location).add(Duration(seconds: 20));
-  //       // fltrNotification.show(
-  //       //     1,
-  //       //     'Subscription Notification',
-  //       //     'Faith\'s subscription has expired.',
-  //       //     notifDetails
-  //       // );
-  //
-  //       await fltrNotification.zonedSchedule(
-  //           m.id,
-  //           'Subscription Notification',
-  //           '${m.surname} ${m.firstName}\'s subscription has expired.',
-  //           scheduledDate,
-  //           notifDetails,
-  //           uiLocalNotificationDateInterpretation:
-  //           UILocalNotificationDateInterpretation.absoluteTime,
-  //           androidAllowWhileIdle: true);
-  //     }
-  //       created = true;
-  //   }
-  //
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,7 +18,6 @@ class _HomePageState extends State<HomePage> {
         body: Scrollbar(
           child: Container(
             color: Colors.grey.withOpacity(0.3),
-            padding: EdgeInsets.all(8.0),
             child: ListView(
               children: <Widget>[
                 Padding(
@@ -136,7 +75,7 @@ class _HomePageState extends State<HomePage> {
                                   'Gym Members',
                                   style: TextStyle(
                                       color: Theme.of(context).primaryColor,
-                                      fontSize: 18.0),
+                                      fontSize: MediaQuery.of(context).size.width * 0.04),
                                 ),
                               )
                             ],
@@ -227,7 +166,7 @@ class _HomePageState extends State<HomePage> {
                                       'Stats',
                                       style: TextStyle(
                                           color: Theme.of(context).primaryColor,
-                                          fontSize: 18.0),
+                                          fontSize: MediaQuery.of(context).size.width * 0.04),
                                     ),
                                   )
                                 ],
@@ -310,7 +249,7 @@ class _HomePageState extends State<HomePage> {
                                       'Attendance',
                                       style: TextStyle(
                                           color: Theme.of(context).primaryColor,
-                                          fontSize: 18.0),
+                                          fontSize: MediaQuery.of(context).size.width * 0.04),
                                     ),
                                   )
                                 ],
@@ -374,7 +313,7 @@ class _HomePageState extends State<HomePage> {
                                   'Services',
                                   style: TextStyle(
                                       color: Theme.of(context).primaryColor,
-                                      fontSize: 18.0),
+                                      fontSize: MediaQuery.of(context).size.width * 0.04),
                                 ),
                               )
                             ],
@@ -403,7 +342,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 title: Text(
                   "Spring Superior Fitness Club",
-                  style: TextStyle(fontSize: 15.0),
+                  style: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.035),
                 ),
               ),
             )

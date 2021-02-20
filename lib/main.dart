@@ -7,17 +7,8 @@ import 'package:workmanager/workmanager.dart';
 import 'models/member_model.dart';
 import 'pages/home.dart';
 
-// callbackDispatcher() {
-//   print('got here four');
-//   Workmanager.executeTask((taskName, inputData) {
-//     NotificationServices.initializer();
-//     NotificationServices.showNotification();
-//     return Future.value(true);
-//   });
-// }
-//
-
 const simplePeriodicTask = 'simplePeriodicTask';
+MemberServices memberServices = MemberServices();
 
 void _showNotification(fltrNotification) async {
 
@@ -28,24 +19,22 @@ void _showNotification(fltrNotification) async {
   var iosSettings = IOSNotificationDetails();
   var notifDetails =  NotificationDetails(android: androidSettings, iOS: iosSettings);
 
-
-  fltrNotification.show(
-      1,
+  await fltrNotification.show(
+      '1',
       'Subscription Notification',
-      'Faith\'s subscription has expired.',
-      notifDetails
-  );
+      'Good morning! Time to check for updates',
+      notifDetails,
+      androidAllowWhileIdle: true);
+
 }
 
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  print('here ****************************************************************');
   await Workmanager.initialize(
     callbackDispatcher,
-    // isInDebugMode: true,
+    isInDebugMode: true,
   );
 
-  print('got here three');
   await Workmanager.registerPeriodicTask(
     '5',
     simplePeriodicTask,
@@ -67,54 +56,12 @@ void callbackDispatcher(){
     fltrNotification = new FlutterLocalNotificationsPlugin();
     fltrNotification.initialize(initializationSettings);
 
-
-    MemberServices memberServices = MemberServices();
-    List<Member> memList = await memberServices.checkDate();
-    if(memList.isNotEmpty){
-      for(Member m in memList){
-        var scheduledTime = DateTime.now();
-        final timeZone = TimeZone();
-        String timeZoneName = await timeZone.getTimeZoneName();
-        final location = await timeZone.getLocation(timeZoneName);
-        final scheduledDate = tz.TZDateTime.from(scheduledTime, location).add(Duration(seconds: 20));
-        print('here ==================================================================');
-        _showNotification(fltrNotification);
-        // await fltrNotification.zonedSchedule(
-        //     m.id,
-        //     'Subscription Notification',
-        //     '${m.surname} ${m.firstName}\'s subscription has expired.',
-        //     scheduledDate,
-        //     notifDetails,
-        //     uiLocalNotificationDateInterpretation:
-        //     UILocalNotificationDateInterpretation.absoluteTime,
-        //     androidAllowWhileIdle: true);
-      }
-    }
+    _showNotification(fltrNotification);
+    print('execute ___________________________________________________________');
 
     return Future.value(true);
   });
 }
-
-// Future<List<Member>>checkDate() async {
-//   MemberServices memServices = MemberServices();
-//   List<Member> memList = List<Member>();
-//   DateTime now = DateTime.now();
-//   List<Member> membersList = await memServices.getAllMembers();
-//   membersList.forEach((member) async {
-//     DateTime expiryDate = DateTime.parse(member.date);
-//     if (now.isAfter(expiryDate)) {
-//       member = Member(
-//           id: member.id,
-//           surname: member.surname,
-//           firstName: member.firstName,
-//           date: member.date,
-//           active: 'false');
-//       await memServices.updateMember(member);
-//       memList.add(member);
-//     }
-//   });
-//   return memList;
-// }
 
 
 

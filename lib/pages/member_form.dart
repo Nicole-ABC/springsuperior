@@ -13,9 +13,11 @@ class NewMember extends StatefulWidget {
 class _NewMemberState extends State<NewMember> {
   TextEditingController surnameController = TextEditingController();
   TextEditingController nameController = TextEditingController();
+  TextEditingController amountController = TextEditingController();
 
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   DateTime _dateTime;
+  DateTime compareDate = DateTime.now();
 
   MemberServices memberServices = MemberServices();
   static String message;
@@ -42,6 +44,7 @@ class _NewMemberState extends State<NewMember> {
               Padding(
                 padding: EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
                 child: TextField(
+                  textCapitalization: TextCapitalization.sentences,
                   controller: surnameController,
                   decoration: InputDecoration(
                       hintText: 'Surname'
@@ -51,9 +54,20 @@ class _NewMemberState extends State<NewMember> {
               Padding(
                 padding: EdgeInsets.only(left: 20.0, right: 20.0),
                 child: TextField(
+                  textCapitalization: TextCapitalization.sentences,
                   controller: nameController,
                   decoration: InputDecoration(
                       hintText: 'First Name'
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
+                child: TextField(
+                  textCapitalization: TextCapitalization.sentences,
+                  controller: amountController,
+                  decoration: InputDecoration(
+                      hintText: 'Amount',
                   ),
                 ),
               ),
@@ -111,32 +125,76 @@ class _NewMemberState extends State<NewMember> {
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: GestureDetector(
                   onTap: () {
-                    if(DateTime.now().isAfter(_dateTime)){
+                    if(nameController.text == '' || surnameController.text == ''){
+                      _scaffoldKey.currentState.showSnackBar(SnackBar(
+                        duration: Duration(milliseconds: 1000),
+                        content: Text('Text field cannot be empty!'),
+                      ));
+                    }
+                    else if(_dateTime == null){
+                      _scaffoldKey.currentState.showSnackBar(SnackBar(
+                        duration: Duration(milliseconds: 1000),
+                        content: Text('Please select a date!'),
+                      ));
+                    }
+                    else if(DateTime.now().isAfter(_dateTime)){
                       final member = Member(
                           firstName: nameController.text,
                           surname: surnameController.text,
+                          amount: amountController.text,
                           date: _dateTime.toString(),
                           active: 'false'
                       );
                       memberServices.createMember(member);
-                    } else {
+                      _scaffoldKey.currentState.showSnackBar(SnackBar(
+                        duration: Duration(milliseconds: 1000),
+                        content: Text('${surnameController.text} ${nameController.text} has been added to your list.'),
+                      ));
+                      setState(() {
+                        nameController.clear();
+                        surnameController.clear();
+                        amountController.clear();
+                      });
+                      _dateTime = null;
+                    } else if(compareDate.difference(_dateTime).inDays == 7){
                       final member = Member(
                           firstName: nameController.text,
                           surname: surnameController.text,
+                          amount: amountController.text,
+                          date: _dateTime.toString(),
+                          active: 'false'
+                      );
+                      memberServices.createMember(member);
+                      _scaffoldKey.currentState.showSnackBar(SnackBar(
+                        duration: Duration(milliseconds: 1000),
+                        content: Text('${surnameController.text} ${nameController.text} has been added to your list.'),
+                      ));
+                      setState(() {
+                        nameController.clear();
+                        surnameController.clear();
+                        amountController.clear();
+                      });
+                    }
+                    else {
+                      final member = Member(
+                          firstName: nameController.text,
+                          surname: surnameController.text,
+                          amount: amountController.text,
                           date: _dateTime.toString(),
                           active: 'true'
                       );
                       memberServices.createMember(member);
+                      _scaffoldKey.currentState.showSnackBar(SnackBar(
+                        duration: Duration(milliseconds: 1000),
+                        content: Text('${surnameController.text} ${nameController.text} has been added to your list.'),
+                      ));
+                      setState(() {
+                        nameController.clear();
+                        surnameController.clear();
+                      });
+                      _dateTime = null;
                     }
-                    _scaffoldKey.currentState.showSnackBar(SnackBar(
-                      duration: Duration(milliseconds: 1000),
-                      content: Text('${surnameController.text} ${nameController.text} has been added to your list.'),
-                    ));
-                    setState(() {
-                      nameController.clear();
-                      surnameController.clear();
-                    });
-                    _dateTime = null;
+
                   },
                   child: Container(
                     width: 300.0,

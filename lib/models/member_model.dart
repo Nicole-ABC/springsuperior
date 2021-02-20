@@ -3,12 +3,14 @@ class Member{
   String surname;
   String firstName;
   String date;
+  String amount;
   String active;
 
   Member({
     this.id,
     this.active,
     this.date,
+    this.amount,
     this.firstName,
     this.surname,
   });
@@ -19,6 +21,7 @@ class Member{
       map['_id'] = id;
     map['surname'] = surname;
     map['name'] = firstName;
+    map['amount'] = amount;
     map['active'] = active;
     map['date'] = date;
     return map;
@@ -28,6 +31,7 @@ class Member{
     id = map['_id'];
     surname = map['surname'];
     firstName = map['name'];
+    amount = map['amount'];
     active = map['active'];
     date = map['date'];
 

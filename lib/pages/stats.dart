@@ -32,11 +32,6 @@ class _StatsPageState extends State<StatsPage> {
         presentList = [0.0];
         presentList.add(ids.length.toDouble());
       }
-      presentList.forEach((element) {
-        print(element);
-      });
-    }else{
-      presentList = [];
     }
     created = true;
     return presentList;
@@ -68,6 +63,7 @@ class _StatsPageState extends State<StatsPage> {
 
   @override
   void initState() {
+    getNumPresent();
     getMembers();
     super.initState();
   }
@@ -84,8 +80,8 @@ class _StatsPageState extends State<StatsPage> {
           Center(
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.01, vertical: MediaQuery.of(context).size.height * 0.02),
-              margin: EdgeInsets.only(left: 8.0, right: 10.0, top: 30.0),
-              height: MediaQuery.of(context).size.height * 0.4,
+              margin: EdgeInsets.only(left: 8.0, right: 10.0, top: MediaQuery.of(context).size.height *0.02),
+              height: MediaQuery.of(context).size.height * 0.38,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(50.0),
                   border: Border.all(
@@ -104,7 +100,7 @@ class _StatsPageState extends State<StatsPage> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(
-                        bottom: 25.0, left: 12.0, right: 12.0),
+                        bottom: 12.0, left: 12.0, right: 12.0),
                     child: FutureBuilder(
                         future: getNumPresent(),
                         builder: (context, snapshot) {
@@ -121,8 +117,8 @@ class _StatsPageState extends State<StatsPage> {
                               child: Column(
                                 children: <Widget>[
                                   Container(
-                                    height: 100.0,
-                                    width: 100.0,
+                                    height: 80.0,
+                                    width: 80.0,
                                     child: CircularProgressIndicator(
                                       backgroundColor:
                                       Theme
@@ -142,32 +138,22 @@ class _StatsPageState extends State<StatsPage> {
                             );
                           }else if (snapshot.data.length == 0) {
                             return Container(
-                              width: MediaQuery.of(context).size.width * 0.7,
-                                height: MediaQuery.of(context).size.height *0.20,
+                              width: MediaQuery.of(context).size.width * 0.6,
+                                height: MediaQuery.of(context).size.height *0.15,
                                 child:
-                                Column(
-                                  children: [
-                                    Center(child: Text('This data does not reflect actual attendance information', style: TextStyle(color: Colors.grey),),),
-                                    Sparkline(
-                                      lineGradient: new LinearGradient(
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                        colors: [
-                                          Colors.blueGrey[800],
-                                          Colors.grey[400]
-                                        ],
+                                Container(
+                                  child: Center(
+                                    child: Text(
+                                      'No data available for this chart yet.',
+                                      style: TextStyle(
+                                        fontSize: MediaQuery.of(context).size.width *0.035,
+                                        color: Colors.grey
                                       ),
-                                      data: [2.0, 4.0, 3.0, 5.0],
-                                      pointsMode: PointsMode.none,
-                                      pointColor: Colors.purple[900],
-                                      lineWidth: 5.0,
-                                      pointSize: 12.0,
                                     ),
-                                  ],
+                                  ),
                                 )
                             );
                           }
-                          else {
                             return Container(
                                 width: MediaQuery.of(context).size.width * 0.7,
                                 height: MediaQuery.of(context).size.height *0.20,
@@ -187,7 +173,6 @@ class _StatsPageState extends State<StatsPage> {
                               pointSize: 12.0,
                             )
                             );
-                          }
                         }),
                   ),
                   Center(
@@ -196,15 +181,16 @@ class _StatsPageState extends State<StatsPage> {
                         child: InkWell(
                           onTap: () {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => StatsDetails(memberCount: memberCount)));
+                            setState(() {});
                           },
                           splashColor: Colors.grey.withOpacity(0.7),
                           child: Container(
                             width: MediaQuery.of(context).size.width * 0.8,
-                            height: 30.0,
+                            height: 20.0,
                             child: Center(
                               child: Text(
                                 'Details',
-                                style: TextStyle(fontSize: 20.0),
+                                style: TextStyle(fontSize: MediaQuery.of(context).size.width *0.05),
                               ),
                             ),
                           ),
@@ -256,7 +242,11 @@ class _StatsPageState extends State<StatsPage> {
                                         color: Colors.purple[900]
                                       ),
                                     ),
-                                    Text('Average attendance')
+                                    Text('Average attendance',
+                                      style: TextStyle(
+                                        fontSize: MediaQuery.of(context).size.width * 0.035
+                                      ),
+                                    )
                                   ],
                                 ),
                                 SizedBox(
@@ -272,7 +262,10 @@ class _StatsPageState extends State<StatsPage> {
                                           color: Colors.purple[200]
                                       ),
                                     ),
-                                    Text('Total number of members')
+                                    Text('Total number of members',
+                                      style: TextStyle(
+                                          fontSize: MediaQuery.of(context).size.width * 0.035
+                                      ),)
                                   ],
                                 )
                               ],
@@ -295,8 +288,8 @@ class _StatsPageState extends State<StatsPage> {
                                     child: Column(
                                       children: <Widget>[
                                         Container(
-                                          height: 100.0,
-                                          width: 100.0,
+                                          height: 80.0,
+                                          width: 80.0,
                                           child: CircularProgressIndicator(
                                             backgroundColor:
                                             Theme
@@ -316,28 +309,13 @@ class _StatsPageState extends State<StatsPage> {
                                   );
                                 }
                                 else if (snapshot.data == 0) {
-                                  return new AnimatedCircularChart(
-                                    size: MediaQuery.of(context).size * 0.5,
-                                    holeRadius: 50.0,
-                                    initialChartData: <CircularStackEntry>[
-                                      new CircularStackEntry(
-                                        <CircularSegmentEntry>[
-                                          new CircularSegmentEntry(
-                                            0.0,
-                                            Colors.purple[900],
-                                          ),
-                                          new CircularSegmentEntry(
-                                           0.0,
-                                            Colors.purple[200],
-                                          ),
-                                        ],
+                                  return Center(
+                                    child: Text(
+                                      'No data yet.',
+                                      style: TextStyle(
+                                          fontSize: MediaQuery.of(context).size.width *0.035,
+                                          color: Colors.grey
                                       ),
-                                    ],
-                                    holeLabel: '0',
-                                    labelStyle: TextStyle(
-                                      color: Colors.purple[800],
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 24.0,
                                     ),
                                   );
                                 }
@@ -350,7 +328,7 @@ class _StatsPageState extends State<StatsPage> {
                                     new CircularStackEntry(
                                       <CircularSegmentEntry>[
                                         new CircularSegmentEntry(
-                                          average,
+                                          snapshot.data == 0 ? 0 : average,
                                           Colors.purple[900],
                                           rankKey: 'completed',
                                         ),

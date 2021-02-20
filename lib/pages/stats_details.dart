@@ -93,10 +93,13 @@ class _StatsDetailsState extends State<StatsDetails> {
                     borderRadius: BorderRadius.circular(10.0)
                   ),
                   child: Center(
-                    child: Text(
-                      '${snapshot.data[index].date}: ${snapshot.data[index].count} members were present out of ${widget.memberCount}',
-                      style: TextStyle(
-                        fontSize: 15.0
+                    child: Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Text(
+                        '${snapshot.data[index].date}: ${snapshot.data[index].count} members were present out of ${widget.memberCount}',
+                        style: TextStyle(
+                          fontSize: MediaQuery.of(context).size.width * 0.04
+                        ),
                       ),
                     ),
                   )

@@ -17,6 +17,8 @@ class MemberListItem extends StatefulWidget {
 
 class _MemberListItemState extends State<MemberListItem> {
   MemberServices memberServices = MemberServices();
+  DateTime now;
+  DateTime _compareDate;
   bool active;
 
 
@@ -38,6 +40,8 @@ class _MemberListItemState extends State<MemberListItem> {
     } else{
       active = false;
     }
+    now = DateTime.now();
+    _compareDate = DateTime.parse(widget.member.date);
   }
 
   @override
@@ -59,7 +63,7 @@ class _MemberListItemState extends State<MemberListItem> {
         },
         child: Container(
           decoration: BoxDecoration(
-            border: Border.all(color: active ? Theme.of(context).accentColor : Colors.grey.withOpacity(0.5)),
+            border: Border.all(color: active ? _compareDate.difference(now).inDays <= 7 ? Colors.red[500] : Theme.of(context).accentColor: Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.circular(15.0)
           ),
           margin: EdgeInsets.all(8.0),
@@ -73,7 +77,7 @@ class _MemberListItemState extends State<MemberListItem> {
                   height: 12.0,
                   width: 12.0,
                   decoration: BoxDecoration(
-                    color: active ? Theme.of(context).accentColor: Colors.grey.withOpacity(0.5),
+                    color: active ? _compareDate.difference(now).inDays <= 7 ? Colors.red[500] : Theme.of(context).accentColor: Colors.grey.withOpacity(0.5),
                     borderRadius: BorderRadius.circular(15.0)
                   )
 

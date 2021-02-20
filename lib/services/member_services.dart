@@ -33,7 +33,7 @@ class MemberServices{
     );
   }
 
-  checkDate() async{
+  Future<List<Member>> checkDate() async{
     DateTime now = DateTime.now();
     List<Member> membersList = await getAllMembers();
     List<Member> expList = List<Member>();
