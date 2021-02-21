@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:spring_superior/models/attendance_model.dart';
 import 'package:spring_superior/models/member_model.dart';
+import 'package:spring_superior/pages/update.dart';
 import 'package:spring_superior/services/attendance_services.dart';
 import 'package:spring_superior/services/member_services.dart';
 
@@ -21,39 +22,32 @@ class MemberDetails extends StatefulWidget {
 }
 
 class _MemberDetailsState extends State<MemberDetails> {
-  int id;
-  String firstName;
-  String surname;
-  String date;
-  bool active;
-
-  AttendanceServices attendanceServices = AttendanceServices();
+ AttendanceServices attendanceServices = AttendanceServices();
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
    MemberServices memberServices = MemberServices();
    DateTime _expiryDate;
   bool _markedPresent = false;
+  TextEditingController amountController = TextEditingController();
+  DateFormat f = DateFormat.yMMMMd();
+  bool isAlmostExpired = false;
 
-
+  getIsAlmostExpired() async{
+    isAlmostExpired = await memberServices.checkAlmostExpired(widget.member);
+    setState(() {});
+  }
 
    @override
    void initState() {
-     id = widget.member.id;
-     firstName = widget.member.firstName;
-     surname = widget.member.surname;
-     date = widget.member.date;
-     if(widget.member.active == 'true'){
-       active = true;
-     }else{
-       active = false;
-     }
      memberServices.checkDate();
+     memberServices.checkAlmostExpired(widget.member);
+     getIsAlmostExpired();
      markedPresent();
      super.initState();
    }
 
 
   String dateString (){
-    DateTime dateTime = DateTime.parse(date);
+    DateTime dateTime = DateTime.parse(widget.member.date);
     final f = DateFormat.yMMMMd();
     return f.format(dateTime);
   }
@@ -73,7 +67,6 @@ class _MemberDetailsState extends State<MemberDetails> {
      }
      setState(() {});
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -97,11 +90,11 @@ class _MemberDetailsState extends State<MemberDetails> {
                     width: MediaQuery.of(context).size.width * 0.75,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.4),
-                      color: active ? Theme.of(context).accentColor : Colors.grey.withOpacity(0.7)
+                      color: widget.member.active == 'true' ? isAlmostExpired ? Colors.red[500] : Theme.of(context).accentColor : Colors.grey.withOpacity(0.7)
                     ),
                     child: Center(
                       child: Text(
-                        '$surname $firstName',
+                        '${widget.member.surname} ${widget.member.firstName}',
                         style: TextStyle(
                             fontSize: 30.0,
                           color: Colors.white
@@ -116,7 +109,7 @@ class _MemberDetailsState extends State<MemberDetails> {
                   padding: EdgeInsets.symmetric(horizontal: 15.0),
                   child: Center(
                     child: Text(
-                      active ? 'Subscription is still active. It will expire on ${dateString()}': 'Subscription has expired on ${dateString()}',
+                      widget.member.active == 'true' ? 'Subscription is still active. It will expire on ${dateString()}': 'Subscription has expired on ${dateString()}',
                       style: TextStyle(
                           fontSize: 20.0
                       ),
@@ -125,35 +118,14 @@ class _MemberDetailsState extends State<MemberDetails> {
                 ),
               ),
               Center(
-                child: active ? Row(
+                child: widget.member.active == 'true' ? Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     InkWell(
                       onTap: ()async{
-                        await showDatePicker(
-                          context: context,
-                          initialDate: _expiryDate == null ? DateTime.parse(date) : _expiryDate,
-                          firstDate: DateTime(2001),
-                          lastDate: DateTime(2100),
-                        ).then((expDate) async{
-                          setState(() {
-                            if(expDate != null){
-                              _expiryDate = expDate;
-                            }
-                          });
-                          bool act = true;
-                          if(DateTime.now().isAfter(_expiryDate)){
-                            act = false;
-                          }
-                          final member = Member(
-                              id: id,
-                              firstName: firstName,
-                              surname: surname,
-                              date: _expiryDate.toString(),
-                              active: act.toString()
-                          );
-                          await memberServices.updateMember(member);
-                          widget.member = member;
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => Update(member: widget.member)));
+                        setState(() {
+                          getIsAlmostExpired();
                         });
                       },
                       child: Center(
@@ -189,7 +161,7 @@ class _MemberDetailsState extends State<MemberDetails> {
                             String today = f.format(now);
                             Attendance attendance = Attendance(
                                 date: today,
-                                memberId: id,
+                                memberId: widget.member.id,
                             );
                             if(_markedPresent){
                               scaffoldKey.currentState.showSnackBar(SnackBar(
@@ -236,7 +208,7 @@ class _MemberDetailsState extends State<MemberDetails> {
                     onTap: ()async{
                       await showDatePicker(
                           context: context,
-                          initialDate: _expiryDate == null ? DateTime.parse(date) : _expiryDate,
+                          initialDate: _expiryDate == null ? DateTime.parse(widget.member.date) : _expiryDate,
                           firstDate: DateTime(2001),
                           lastDate: DateTime(2100),
                       ).then((expDate) async{
@@ -250,9 +222,9 @@ class _MemberDetailsState extends State<MemberDetails> {
                             act = false;
                           }
                           final member = Member(
-                              id: id,
-                              firstName: firstName,
-                              surname: surname,
+                              id: widget.member.id,
+                              firstName: widget.member.firstName,
+                              surname: widget.member.surname,
                               date: _expiryDate.toString(),
                               active: act.toString()
                           );

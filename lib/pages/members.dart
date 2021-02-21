@@ -288,6 +288,7 @@ class _MembersState extends State<Members> {
                       ),
                       onDismissed: (direction) async{
                         await memberServices.deleteMember(snapshot.data[index]);
+                        setState(() {});
                       },
                     ));
               }
@@ -340,6 +341,7 @@ class _MembersState extends State<Members> {
                       onDismissed: (direction) async{
                         await memberServices.deleteMember(snapshot.data[index]);
                         await attendanceServices.deleteAttendance(snapshot.data[index]);
+                        setState(() {});
                       },
                     ));
               },
@@ -347,6 +349,17 @@ class _MembersState extends State<Members> {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).primaryColor,
+        onPressed: () {
+          setState(() {});
+        },
+        child: Icon(
+          Icons.refresh,
+          color: Colors.white,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
@@ -417,6 +430,7 @@ class _ActivityBodyState extends State<ActivityBody> {
               ),
               onDismissed: (direction) async{
                 await memberServices.deleteMember(snapshot.data[index]);
+                setState(() {});
               },
             ));
       },

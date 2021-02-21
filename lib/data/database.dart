@@ -15,10 +15,14 @@ class DatabaseHelper {
   static final memberColumnSurname = 'surname';
   static final memberColumnFirstName = 'name';
   static final memberColumnDate = 'date';
-  static final memberColumnAmount = 'amount';
   static final memberColumnActive = 'active';
   static final attendanceColumnId = 'attendanceId';
   static final attendanceColumnDate = 'attendanceDate';
+  static final paymentColumnId = 'paymentId';
+  static final paymentColumnFirstName = 'paymentName';
+  static final paymentColumnSurname = 'paymentSurname';
+  static final paymentColumnAmount = 'paymentAmount';
+  static final paymentColumnDate = 'paymentDate';
   static final foreignKey = 'FK_memberInfoTable_memberAttendance';
 
   static Database _database;
@@ -44,7 +48,6 @@ class DatabaseHelper {
       $memberColumnId INTEGER PRIMARY KEY AUTOINCREMENT,
       $memberColumnSurname TEXT NOT NULL, 
       $memberColumnFirstName TEXT NOT NULL,
-      $memberColumnAmount TEXT NOT NULL,
       $memberColumnDate TEXT NOT NULL, 
       $memberColumnActive TEXT NOT NULL
       )
@@ -56,6 +59,16 @@ class DatabaseHelper {
       $attendanceColumnDate STRING NOT NULL,
       $foreignKey INTEGER NOT NULL,
       FOREIGN KEY ($foreignKey) REFERENCES memberAttendance ($memberColumnId)
+      )
+      ''');
+
+    await db.execute('''
+      CREATE TABLE memberPayment (
+      $paymentColumnId INTEGER PRIMARY KEY AUTOINCREMENT,
+      $paymentColumnSurname TEXT NOT NULL, 
+      $paymentColumnFirstName TEXT NOT NULL,
+      $paymentColumnAmount INTEGER NOT NULL,
+      $paymentColumnDate TEXT NOT NULL
       )
       ''');
   }

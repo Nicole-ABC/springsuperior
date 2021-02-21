@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:spring_superior/models/member_model.dart';
+import 'package:spring_superior/models/payment_model.dart';
 import 'package:spring_superior/services/member_services.dart';
+import 'package:spring_superior/services/payment_services.dart';
 
 
 class NewMember extends StatefulWidget {
@@ -20,7 +22,8 @@ class _NewMemberState extends State<NewMember> {
   DateTime compareDate = DateTime.now();
 
   MemberServices memberServices = MemberServices();
-  static String message;
+  PaymentServices paymentServices = PaymentServices();
+
 
 
   final f = DateFormat.yMMMMd();
@@ -62,7 +65,7 @@ class _NewMemberState extends State<NewMember> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
+                padding: EdgeInsets.only(left: 20.0, right: 20.0),
                 child: TextField(
                   textCapitalization: TextCapitalization.sentences,
                   controller: amountController,
@@ -125,7 +128,7 @@ class _NewMemberState extends State<NewMember> {
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: GestureDetector(
                   onTap: () {
-                    if(nameController.text == '' || surnameController.text == ''){
+                    if(nameController.text == '' || surnameController.text == '' || amountController.text == ''){
                       _scaffoldKey.currentState.showSnackBar(SnackBar(
                         duration: Duration(milliseconds: 1000),
                         content: Text('Text field cannot be empty!'),
@@ -141,11 +144,17 @@ class _NewMemberState extends State<NewMember> {
                       final member = Member(
                           firstName: nameController.text,
                           surname: surnameController.text,
-                          amount: amountController.text,
                           date: _dateTime.toString(),
                           active: 'false'
                       );
+                      final payment = Payment(
+                        firstName: nameController.text,
+                        surname: surnameController.text,
+                        date: DateTime.now().toString(),
+                        amount: int.parse(amountController.text)
+                      );
                       memberServices.createMember(member);
+                      paymentServices.createPayment(payment);
                       _scaffoldKey.currentState.showSnackBar(SnackBar(
                         duration: Duration(milliseconds: 1000),
                         content: Text('${surnameController.text} ${nameController.text} has been added to your list.'),
@@ -156,15 +165,22 @@ class _NewMemberState extends State<NewMember> {
                         amountController.clear();
                       });
                       _dateTime = null;
-                    } else if(compareDate.difference(_dateTime).inDays == 7){
+                    }
+                    else {
                       final member = Member(
                           firstName: nameController.text,
                           surname: surnameController.text,
-                          amount: amountController.text,
                           date: _dateTime.toString(),
-                          active: 'false'
+                          active: 'true'
+                      );
+                      final payment = Payment(
+                          firstName: nameController.text,
+                          surname: surnameController.text,
+                          date: DateTime.now().toString(),
+                          amount: int.parse(amountController.text)
                       );
                       memberServices.createMember(member);
+                      paymentServices.createPayment(payment);
                       _scaffoldKey.currentState.showSnackBar(SnackBar(
                         duration: Duration(milliseconds: 1000),
                         content: Text('${surnameController.text} ${nameController.text} has been added to your list.'),
@@ -173,24 +189,6 @@ class _NewMemberState extends State<NewMember> {
                         nameController.clear();
                         surnameController.clear();
                         amountController.clear();
-                      });
-                    }
-                    else {
-                      final member = Member(
-                          firstName: nameController.text,
-                          surname: surnameController.text,
-                          amount: amountController.text,
-                          date: _dateTime.toString(),
-                          active: 'true'
-                      );
-                      memberServices.createMember(member);
-                      _scaffoldKey.currentState.showSnackBar(SnackBar(
-                        duration: Duration(milliseconds: 1000),
-                        content: Text('${surnameController.text} ${nameController.text} has been added to your list.'),
-                      ));
-                      setState(() {
-                        nameController.clear();
-                        surnameController.clear();
                       });
                       _dateTime = null;
                     }

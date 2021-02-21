@@ -1,10 +1,8 @@
 import 'package:spring_superior/data/database.dart';
 import 'package:spring_superior/models/member_model.dart';
-import 'package:spring_superior/services/attendance_services.dart';
 
 class MemberServices{
   DatabaseHelper dbHelper = DatabaseHelper.instance;
-  AttendanceServices attendanceServices = AttendanceServices();
 
   Future<int> createMember(Member member) async{
     final db = await dbHelper.database;
@@ -84,6 +82,19 @@ class MemberServices{
     return membersList;
   }
 
+  Future<bool> checkAlmostExpired(Member member) async{
+    List<Member> memList = await getAllMembers();
+    bool isAlmostExpired = false;
+    for(int i = 0; i < memList.length; i++){
+      if(memList[i].id == member.id){
+        if(DateTime.parse(member.date).difference(DateTime.now()).inDays <=7){
+          isAlmostExpired = true;
+        }
+      }
+    }
+    return isAlmostExpired;
+  }
+
 
   Future<List<Member>> getMemberActivity(String keyword) async{
     final db = await dbHelper.database;
@@ -92,5 +103,6 @@ class MemberServices{
     List<Member> membersList =  activityRows.map((member) => Member.fromMap(member)).toList();
     return membersList;
   }
+
 
 }

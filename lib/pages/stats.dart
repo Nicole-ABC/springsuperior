@@ -4,6 +4,7 @@ import 'package:flutter_circular_chart/flutter_circular_chart.dart';
 import 'package:flutter_sparkline/flutter_sparkline.dart';
 import 'dart:math';
 import 'package:spring_superior/models/member_model.dart';
+import 'package:spring_superior/pages/payment_details.dart';
 import 'package:spring_superior/pages/stats_details.dart';
 import 'package:spring_superior/services/attendance_services.dart';
 import 'package:spring_superior/services/member_services.dart';
@@ -74,8 +75,7 @@ class _StatsPageState extends State<StatsPage> {
       appBar: AppBar(
         title: Text('Stats'),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: ListView(
         children: <Widget>[
           Center(
             child: Container(
@@ -200,10 +200,13 @@ class _StatsPageState extends State<StatsPage> {
               ),
             ),
           ),
+          SizedBox(
+            height: 18.0,
+          ),
           Center(
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.01, vertical: MediaQuery.of(context).size.height * 0.02),
-                margin: EdgeInsets.only(left: 10.0, right: 10.0, bottom: 30.0),
+                margin: EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
                 height: MediaQuery.of(context).size.height * 0.4,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(50.0),
@@ -357,6 +360,39 @@ class _StatsPageState extends State<StatsPage> {
                   ],
                 ),
               )
+          ),
+          SizedBox(
+            height: 18.0,
+          ),
+          Center(
+            child: Material(
+              type: MaterialType.transparency,
+              child: InkWell(
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentDetails()));
+                },
+                borderRadius: BorderRadius.circular(50.0),
+                child: Container(
+                  margin: EdgeInsets.only(left: 8.0, right: 10.0, bottom: MediaQuery.of(context).size.height *0.02),
+                  height: MediaQuery.of(context).size.height * 0.1,
+                  width: MediaQuery.of(context).size.width * 0.95,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50.0),
+                      border: Border.all(
+                        color: Theme.of(context).primaryColor.withOpacity(0.5),
+                      ),
+                      color: Colors.white.withOpacity(0.4)),
+                  child: Center(
+                    child: Text(
+                      'Payment History',
+                      style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width * 0.04
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
           )
         ],
       ),

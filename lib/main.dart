@@ -10,7 +10,7 @@ import 'pages/home.dart';
 const simplePeriodicTask = 'simplePeriodicTask';
 MemberServices memberServices = MemberServices();
 
-void _showNotification(fltrNotification) async {
+void _showNotification(FlutterLocalNotificationsPlugin fltrNotification) async {
 
   var androidSettings = AndroidNotificationDetails(
       'Expiry Id', 'Expiry', 'Expired',
@@ -20,11 +20,11 @@ void _showNotification(fltrNotification) async {
   var notifDetails =  NotificationDetails(android: androidSettings, iOS: iosSettings);
 
   await fltrNotification.show(
-      '1',
+      1,
       'Subscription Notification',
       'Good morning! Time to check for updates',
-      notifDetails,
-      androidAllowWhileIdle: true);
+      notifDetails
+  );
 
 }
 
@@ -53,7 +53,6 @@ void callbackDispatcher(){
     var iOSInitialize = new IOSInitializationSettings();
     var initializationSettings = new InitializationSettings(
         android: androidInitialize, iOS: iOSInitialize);
-    fltrNotification = new FlutterLocalNotificationsPlugin();
     fltrNotification.initialize(initializationSettings);
 
     _showNotification(fltrNotification);

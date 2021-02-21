@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:spring_superior/pages/member_form.dart';
 import 'package:spring_superior/pages/members.dart';
 import 'package:spring_superior/pages/stats.dart';
+import 'package:spring_superior/services/member_services.dart';
 import 'attendance.dart';
 
 class HomePage extends StatefulWidget {
@@ -11,6 +12,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  MemberServices memberServices = MemberServices();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,6 +49,7 @@ class _HomePageState extends State<HomePage> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => Members()));
+                          setState(() {});
                         },
                         child: Container(
                           margin: EdgeInsets.all(40.0),
