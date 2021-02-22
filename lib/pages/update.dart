@@ -63,7 +63,7 @@ class _UpdateState extends State<Update> {
                       onTap: () {
                         showDatePicker(
                             context: context,
-                            initialDate: _dateTime == null ? DateTime.now() : _dateTime,
+                            initialDate: _dateTime == null ? DateTime.parse(widget.member.date) : _dateTime,
                             firstDate: DateTime(2001),
                             lastDate: DateTime(2100)
                         ).then((ddate) {

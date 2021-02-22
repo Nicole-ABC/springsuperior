@@ -58,7 +58,8 @@ class _MemberListItemState extends State<MemberListItem> {
             getIsAlmostExpired();
           });
         },
-        child: Container(
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 400),
           decoration: BoxDecoration(
             border: Border.all(color: active ? isAlmostExpired ? Colors.red[500] : Theme.of(context).accentColor: Colors.grey.withOpacity(0.5)),
               borderRadius: BorderRadius.circular(15.0)

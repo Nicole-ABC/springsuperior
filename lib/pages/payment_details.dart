@@ -70,14 +70,12 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                         border: Border.all(),
                         borderRadius: BorderRadius.circular(10.0)
                     ),
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Text(
-                          '${snapshot.data[index].surname} ${snapshot.data[index].firstName} paid ${snapshot.data[index].amount} on ${f.format(DateTime.parse(snapshot.data[index].date))}',
-                          style: TextStyle(
-                              fontSize: MediaQuery.of(context).size.width * 0.04
-                          ),
+                    child: Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Text(
+                        '${snapshot.data[index].surname} ${snapshot.data[index].firstName} paid ${snapshot.data[index].amount} naira on ${f.format(DateTime.parse(snapshot.data[index].date))}',
+                        style: TextStyle(
+                            fontSize: MediaQuery.of(context).size.width * 0.04
                         ),
                       ),
                     )

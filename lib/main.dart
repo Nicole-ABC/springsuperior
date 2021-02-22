@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:spring_superior/services/member_services.dart';
-import 'package:spring_superior/services/notification_services.dart';
-import 'package:timezone/timezone.dart' as tz;
 import 'package:workmanager/workmanager.dart';
-import 'models/member_model.dart';
 import 'pages/home.dart';
 
 const simplePeriodicTask = 'simplePeriodicTask';
@@ -22,8 +19,8 @@ void _showNotification(FlutterLocalNotificationsPlugin fltrNotification) async {
   await fltrNotification.show(
       1,
       'Subscription Notification',
-      'Good morning! Time to check for updates',
-      notifDetails
+      'Hello! Time to check for updates',
+      notifDetails,
   );
 
 }
@@ -39,14 +36,13 @@ Future<void> main() async{
     '5',
     simplePeriodicTask,
     frequency: Duration(minutes: 15),
-    initialDelay: Duration(seconds: 10)
+    initialDelay: Duration(seconds: 10),
   );
 
   runApp(MyApp());
 }
 
 void callbackDispatcher(){
-  print('dispatch -----------------------------------------------------------------');
   Workmanager.executeTask((taskName, inputData) async{
     FlutterLocalNotificationsPlugin fltrNotification = FlutterLocalNotificationsPlugin();
     var androidInitialize = new AndroidInitializationSettings('exercise_icon');
@@ -56,7 +52,6 @@ void callbackDispatcher(){
     fltrNotification.initialize(initializationSettings);
 
     _showNotification(fltrNotification);
-    print('execute ___________________________________________________________');
 
     return Future.value(true);
   });

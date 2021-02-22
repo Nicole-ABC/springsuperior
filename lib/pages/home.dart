@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:spring_superior/pages/member_form.dart';
 import 'package:spring_superior/pages/members.dart';
+import 'package:spring_superior/pages/services.dart';
 import 'package:spring_superior/pages/stats.dart';
 import 'package:spring_superior/services/member_services.dart';
 import 'attendance.dart';
@@ -287,7 +288,7 @@ class _HomePageState extends State<HomePage> {
                       child: InkWell(
                         splashColor: Colors.pink.withOpacity(0.3),
                         onTap: () {
-                          print('tapped');
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Services()));
                         },
                         child: Container(
                           margin: EdgeInsets.all(40.0),
@@ -338,16 +339,21 @@ class _HomePageState extends State<HomePage> {
               floating: true,
               pinned: true,
               flexibleSpace: FlexibleSpaceBar(
-                background: Container(
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage('assets/images/lands.jpg'),
-                          fit: BoxFit.fill)),
+                background: Stack(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage('assets/images/wallpaper.jpg'),
+                              fit: BoxFit.fill)),
+                    ),
+                  ],
                 ),
                 title: Text(
                   "Spring Superior Fitness Club",
-                  style: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.035),
+                  style: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.04),
                 ),
+                centerTitle: true,
               ),
             )
           ];
@@ -357,7 +363,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Theme.of(context).primaryColor,
         onPressed: () => Navigator.push(
             context, MaterialPageRoute(builder: (context) => NewMember())),
-        child: Icon(
+        child:  Icon(
           Icons.add,
           color: Colors.white,
         ),
@@ -366,7 +372,5 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // Future notificationSelected(String payload) async{
-  //   Navigator.push(context, MaterialPageRoute(builder:(context)=> Members()));
-  // }
+
 }
