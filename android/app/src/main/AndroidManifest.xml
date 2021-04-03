@@ -7,8 +7,8 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="spring_superior"
-        android:icon="@mipmap/ic_launcher">
+        android:label="Spring Superior"
+        android:icon="@mipmap/exercise_icon">
 
         <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
             <intent-filter>

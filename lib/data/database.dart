@@ -14,6 +14,7 @@ class DatabaseHelper {
   static final memberColumnId = '_id';
   static final memberColumnSurname = 'surname';
   static final memberColumnFirstName = 'name';
+  static final memberColumnPhoneNumber = 'phoneNumber';
   static final memberColumnDate = 'date';
   static final memberColumnActive = 'active';
   static final attendanceColumnId = 'attendanceId';
@@ -48,6 +49,7 @@ class DatabaseHelper {
       $memberColumnId INTEGER PRIMARY KEY AUTOINCREMENT,
       $memberColumnSurname TEXT NOT NULL, 
       $memberColumnFirstName TEXT NOT NULL,
+      $memberColumnPhoneNumber TEXT NOT NULL,
       $memberColumnDate TEXT NOT NULL, 
       $memberColumnActive TEXT NOT NULL
       )

@@ -15,6 +15,7 @@ class NewMember extends StatefulWidget {
 class _NewMemberState extends State<NewMember> {
   TextEditingController surnameController = TextEditingController();
   TextEditingController nameController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController();
   TextEditingController amountController = TextEditingController();
 
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -61,6 +62,16 @@ class _NewMemberState extends State<NewMember> {
                   controller: nameController,
                   decoration: InputDecoration(
                       hintText: 'First Name'
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 20.0, right: 20.0),
+                child: TextField(
+                  textCapitalization: TextCapitalization.sentences,
+                  controller: phoneNumberController,
+                  decoration: InputDecoration(
+                      hintText: 'Phone Number'
                   ),
                 ),
               ),
@@ -128,7 +139,7 @@ class _NewMemberState extends State<NewMember> {
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: GestureDetector(
                   onTap: () {
-                    if(nameController.text == '' || surnameController.text == '' || amountController.text == ''){
+                    if(nameController.text == '' || surnameController.text == '' || amountController.text == '' || phoneNumberController.text == '' ){
                       _scaffoldKey.currentState.showSnackBar(SnackBar(
                         duration: Duration(milliseconds: 1000),
                         content: Text('Text field cannot be empty!'),
@@ -145,6 +156,7 @@ class _NewMemberState extends State<NewMember> {
                           firstName: nameController.text,
                           surname: surnameController.text,
                           date: _dateTime.toString(),
+                          phoneNumber: phoneNumberController.text,
                           active: 'false'
                       );
                       final payment = Payment(
@@ -163,6 +175,7 @@ class _NewMemberState extends State<NewMember> {
                         nameController.clear();
                         surnameController.clear();
                         amountController.clear();
+                        phoneNumberController.clear();
                       });
                       _dateTime = null;
                     }
@@ -171,6 +184,7 @@ class _NewMemberState extends State<NewMember> {
                           firstName: nameController.text,
                           surname: surnameController.text,
                           date: _dateTime.toString(),
+                          phoneNumber: phoneNumberController.text,
                           active: 'true'
                       );
                       final payment = Payment(
@@ -189,6 +203,7 @@ class _NewMemberState extends State<NewMember> {
                         nameController.clear();
                         surnameController.clear();
                         amountController.clear();
+                        phoneNumberController.clear();
                       });
                       _dateTime = null;
                     }

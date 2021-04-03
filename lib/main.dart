@@ -29,13 +29,13 @@ Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Workmanager.initialize(
     callbackDispatcher,
-    isInDebugMode: true,
+    isInDebugMode: false,
   );
 
   await Workmanager.registerPeriodicTask(
     '5',
     simplePeriodicTask,
-    frequency: Duration(minutes: 15),
+    frequency: Duration(hours: 12),
     initialDelay: Duration(seconds: 10),
   );
 
@@ -64,7 +64,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Spring Superior',
       theme: ThemeData(
           primaryColor: Color(0xFF070707),
           accentColor: Colors.purple[800]
