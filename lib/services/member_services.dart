@@ -42,6 +42,7 @@ class MemberServices{
             surname: member.surname,
             firstName: member.firstName,
             date: member.date,
+            phoneNumber: member.phoneNumber,
             active: 'false'
         );
         await updateMember(member);
