@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:spring_superior/services/attendance_services.dart';
 import 'package:spring_superior/services/member_services.dart';
 import 'package:spring_superior/widgets/member_list_item.dart';
 
@@ -11,6 +12,7 @@ class Members extends StatefulWidget {
 
 class _MembersState extends State<Members> {
   MemberServices memberServices = MemberServices();
+  AttendanceServices attendanceServices = AttendanceServices();
   bool _collapsedSearch = true;
   bool _collapsedActive = true;
   bool _collapsedInactive = true;
@@ -19,18 +21,6 @@ class _MembersState extends State<Members> {
   bool _isCheckingInactive = false;
   String keyword;
   String activityKeyword;
-  Future _myFuture;
-
-  getMyFuture(){
-    print('home called');
-    _myFuture = memberServices.getAllMembers();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getMyFuture();
-  }
 
 
   @override
@@ -49,7 +39,7 @@ class _MembersState extends State<Members> {
                 children: <Widget>[
                   AnimatedContainer(
                     duration: Duration(milliseconds: 400),
-                    width: _collapsedSearch ? 50.0 : 250.0,
+                    width: _collapsedSearch ? 50.0 : MediaQuery.of(context).size.width *0.5,
                     height: 50.0,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20.0),
@@ -190,7 +180,7 @@ class _MembersState extends State<Members> {
                       borderRadius: BorderRadius.circular(20.0),
                       color: _collapsedInactive
                           ? Colors.white.withOpacity(0.9)
-                          : Colors.white.withOpacity(0.5),
+                          : Colors.white.withOpacity(0.9),
                       boxShadow: kElevationToShadow[3],
                     ),
                     child: Row(
@@ -204,7 +194,7 @@ class _MembersState extends State<Members> {
                                   child: Text(
                                     "Inactive",
                                     style: TextStyle(
-                                        color: Colors.white, fontSize: 16.5),
+                                        color: Colors.grey.withOpacity(0.8), fontSize: 16.5),
                                   ))),
                         ),
                         AnimatedContainer(
@@ -237,9 +227,7 @@ class _MembersState extends State<Members> {
                                 padding: EdgeInsets.all(12.0),
                                 child: Icon(
                                   _collapsedInactive ? Icons.person : Icons.close,
-                                  color: _collapsedInactive
-                                      ? Colors.grey.withOpacity(0.6)
-                                      : Colors.white,
+                                  color: Colors.grey.withOpacity(0.8),
                                 ),
                               ),
                             ),
@@ -300,11 +288,12 @@ class _MembersState extends State<Members> {
                       ),
                       onDismissed: (direction) async{
                         await memberServices.deleteMember(snapshot.data[index]);
+                        setState(() {});
                       },
                     ));
               }
             ) : FutureBuilder(
-              future: _myFuture,
+              future: memberServices.getAllMembers(),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return Center(
@@ -345,20 +334,32 @@ class _MembersState extends State<Members> {
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemBuilder: (context, index) => Dismissible(
-                          key: UniqueKey(),
-                          child: MemberListItem(
-                            member: snapshot.data[index],
-                            myFuture: _myFuture,
-                          ),
-                          onDismissed: (direction) async{
-                            await memberServices.deleteMember(snapshot.data[index]);
-                          },
-                        ));
+                      key: UniqueKey(),
+                      child: MemberListItem(
+                        member: snapshot.data[index],
+                      ),
+                      onDismissed: (direction) async{
+                        await memberServices.deleteMember(snapshot.data[index]);
+                        await attendanceServices.deleteAttendance(snapshot.data[index]);
+                        setState(() {});
+                      },
+                    ));
               },
             ),
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).primaryColor,
+        onPressed: () {
+          setState(() {});
+        },
+        child: Icon(
+          Icons.refresh,
+          color: Colors.white,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
@@ -429,6 +430,7 @@ class _ActivityBodyState extends State<ActivityBody> {
               ),
               onDismissed: (direction) async{
                 await memberServices.deleteMember(snapshot.data[index]);
+                setState(() {});
               },
             ));
       },

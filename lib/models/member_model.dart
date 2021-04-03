@@ -3,6 +3,7 @@ class Member{
   String surname;
   String firstName;
   String date;
+  String phoneNumber;
   String active;
 
   Member({
@@ -10,6 +11,7 @@ class Member{
     this.active,
     this.date,
     this.firstName,
+    this.phoneNumber,
     this.surname,
   });
 
@@ -20,8 +22,8 @@ class Member{
     map['surname'] = surname;
     map['name'] = firstName;
     map['active'] = active;
+    map['phoneNumber'] = phoneNumber;
     map['date'] = date;
-
     return map;
   }
 
@@ -30,6 +32,7 @@ class Member{
     surname = map['surname'];
     firstName = map['name'];
     active = map['active'];
+    phoneNumber = map['phoneNumber'];
     date = map['date'];
 
   }
